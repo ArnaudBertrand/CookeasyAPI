@@ -1,5 +1,6 @@
 var Hapi = require('hapi');
 var internals = {};
+var configs = {};
 
 // Create a server with a host and port
 var server = new Hapi.Server();
@@ -20,13 +21,21 @@ internals.contact = function (request, reply) {
 
 internals.userLogin = function(request, reply){
   console.log(request.payload);
+  console.log(request.payload.password);
+  console.log(request.payload["password"]);
   reply(request.payload.password + ' ' + request.payload.username);
 }
+
+configs.userLogin = {
+  validate: { payload: {
+  	  username: Types.String().required().min(3),
+      password: Types.String().required().min(3)
+  }}};
 
 // Add the route
 server.route([
   { method: 'GET', path:'/', handler: internals.get },
-  { method: 'POST', path:'/user/login', handler: internals.userLogin },
+  { method: 'POST', path:'/user/login', handler: internals.userLogin, config: configs.userLogin},
   { method: 'GET', path:'/hello', handler: internals.contact }
 ]);
 
