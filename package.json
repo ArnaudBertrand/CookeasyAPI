@@ -5,7 +5,8 @@
   "main": "app.js",
   "dependencies": {
     "hapi": "^8.4.0",
-    "joi": "^4.6.2"
+    "joi": "^4.6.2",
+    "mongoose": "4.0.2"
   },
   "devDependencies": {},
   "scripts": {
