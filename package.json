@@ -2,7 +2,7 @@
   "name": "Cookeazy",
   "version": "0.0.0",
   "description": "REST Api for Cookeazy",
-  "main": "server.js",
+  "main": "app.js",
   "dependencies": {
     "hapi": "^8.4.0"
   },
