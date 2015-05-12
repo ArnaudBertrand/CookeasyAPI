@@ -21,7 +21,7 @@ server.route({
 server.start();
 
 // Add the route
-server.route(
+server.route([
   {
     method: 'GET',
     path:'/', 
@@ -36,7 +36,7 @@ server.route(
       reply('hello world');
       console.log('test');
     }
-  });
+  }]);
 
 // Start the server
 server.start();
