@@ -14,18 +14,19 @@ internals.get = function (request, reply) {
 };
 
 internals.contact = function (request, reply) {
-  reply(request);
+  reply('Contact page');
   console.log('test');
 };
 
 internals.userLogin = function(request, reply){
-
+  console.log(request.params);
+  reply(request.params.password + ' ' + request.params.username);
 }
 
 // Add the route
 server.route([
   { method: 'GET', path:'/', handler: internals.get },
-  { method: 'GET', path:'/user/login', handler: internals.userLogin },
+  { method: 'POST', path:'/user/login', handler: internals.userLogin },
   { method: 'GET', path:'/hello', handler: internals.contact }
 ]);
 
