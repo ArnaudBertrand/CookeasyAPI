@@ -1,5 +1,7 @@
 var Hapi = require('hapi');
 var Joi = require('joi');
+var Mongoose = require('mongoose');
+
 var internals = {};
 var configs = {};
 
@@ -42,3 +44,21 @@ server.route([
 
 // Start the server
 server.start(function(){ console.log('Server started at [' + server.info.uri + ']'); });
+
+// Connect to database
+Mongoose.connect('mongodb://cookeasyapi:apiPASSWORD@ds061731.mongolab.com:61731/heroku_app36784651');
+var db = Mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function callback() {
+    console.log("Connection with database succeeded.");
+});
+
+var userSchema = mongoose.Schema({
+  name: String,
+  password: String
+});
+var User = mongoose.model('users',userSchema);
+User.find(function(err, users){
+  if(err) return console.log(err);
+  console.log(users);
+});
