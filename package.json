@@ -4,7 +4,8 @@
   "description": "REST Api for Cookeazy",
   "main": "app.js",
   "dependencies": {
-    "hapi": "^8.4.0"
+    "hapi": "^8.4.0",
+    "joi": "^4.6.2"
   },
   "devDependencies": {},
   "scripts": {
