@@ -19,8 +19,8 @@ internals.contact = function (request, reply) {
 };
 
 internals.userLogin = function(request, reply){
-  console.log(request.params);
-  reply(request.params.password + ' ' + request.params.username);
+  console.log(request.payload);
+  reply(request.payload.password + ' ' + request.payload.username);
 }
 
 // Add the route
