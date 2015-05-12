@@ -53,11 +53,11 @@ db.once('open', function callback() {
     console.log("Connection with database succeeded.");
 });
 
-var userSchema = mongoose.Schema({
+var userSchema = Mongoose.Schema({
   name: String,
   password: String
 });
-var User = mongoose.model('users',userSchema);
+var User = Mongoose.model('users',userSchema);
 User.find(function(err, users){
   if(err) return console.log(err);
   console.log(users);
