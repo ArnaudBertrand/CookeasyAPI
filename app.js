@@ -1,4 +1,5 @@
 var Hapi = require('hapi');
+var internals = {};
 
 // Create a server with a host and port
 var server = new Hapi.Server();
@@ -8,35 +9,20 @@ server.connection({
   routes: {cors: true}
 });
 
-server.route({
-  method: 'GET',
-  path:'/hello', 
-  handler: function (request, reply) {
-    reply('hello world');
-    console.log('test');
-  }
-});
+internals.get = function (request, reply) {
+  reply('Home page');
+};
 
-// Start the server
-server.start();
+internals.contact = function (request, reply) {
+  reply('hello world');
+  console.log('test');
+};
 
 // Add the route
 server.route([
-  {
-    method: 'GET',
-    path:'/', 
-    handler: function (request, reply) {
-      reply('test');
-    }
-  },
-  {
-    method: 'GET',
-    path:'/hello', 
-    handler: function (request, reply) {
-      reply('hello world');
-      console.log('test');
-    }
-  }]);
+  { method: 'GET', path:'/', handler: internals.get },
+  { method: 'GET', path:'/hello', handler: internals.contact }
+]);
 
 // Start the server
-server.start();
+server.start(function(){ console.log('Server started at [' + server.info.uri + ']'); });
