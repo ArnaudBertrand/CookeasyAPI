@@ -1,4 +1,5 @@
 var Hapi = require('hapi');
+var Joi = require('Joi');
 var internals = {};
 var configs = {};
 
@@ -28,8 +29,8 @@ internals.userLogin = function(request, reply){
 
 configs.userLogin = {
   validate: { payload: {
-  	  username: Types.String().required().min(3),
-      password: Types.String().required().min(3)
+  	  username: Joi.string().min(3),
+      password: Joi.string().min(3)
   }}};
 
 // Add the route
