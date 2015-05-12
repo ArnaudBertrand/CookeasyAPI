@@ -1,0 +1,15 @@
+{
+  "name": "Cookeazy",
+  "version": "0.0.0",
+  "description": "REST Api for Cookeazy",
+  "main": "server.js",
+  "dependencies": {
+    "hapi": "^8.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "arnaud.bertrand.15@eigsi.fr",
+  "license": "ISC"
+}
