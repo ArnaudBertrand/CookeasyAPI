@@ -6,7 +6,8 @@
   "dependencies": {
     "hapi": "^8.4.0",
     "joi": "^4.6.2",
-    "mongoose": "4.0.2"
+    "mongoose": "4.0.2",
+    "bcrypt": ">=0.5.x",
   },
   "devDependencies": {},
   "scripts": {
