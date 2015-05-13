@@ -8,6 +8,7 @@
     "joi": "^4.6.2",
     "mongoose": "4.0.2",
     "bcrypt": ">=0.5.x",
+    "hapi-auth-basic": "2.0.0"
   },
   "devDependencies": {},
   "scripts": {

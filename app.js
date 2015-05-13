@@ -66,7 +66,7 @@ var validate = function(username,password,callback){
 };
 
 // Authentication
-server.register(require('hapi-auth-basic'), function (err) {
+server.register(Basic, function (err) {
     server.auth.strategy('simple', 'basic', { validateFunc: validate });
     server.route({ method: 'GET', path: '/test', handler: handlers.test, config: { auth: 'simple' } });
 });
