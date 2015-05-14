@@ -75,10 +75,10 @@ configs.userSignup = {
 
 // Routes definitions
 server.route([
-  { method: 'GET', path:'/', handler: handlers.get },
-  { method: 'POST', path:'/user/login', handler: handlers.userLogin, config: configs.userLogin},
-  { method: 'POST', path:'/user/signup', handler: handlers.userSignup, config: configs.userSignup},
-  { method: 'GET', path:'/hello', handler: handlers.contact }
+  { method: 'GET', path:'/', handler: internals.get },
+  { method: 'POST', path:'/user/login', handler: internals.userLogin, config: configs.userLogin},
+  { method: 'POST', path:'/user/signup', handler: internals.userSignup, config: configs.userSignup},
+  { method: 'GET', path:'/hello', handler: internals.contact }
 ]);
 
 // Start the server
