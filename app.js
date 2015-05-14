@@ -31,7 +31,7 @@ internals.userLogin = function(request, reply){
     return reply({success: false, error: 'User not found'});;
   }
 
-  Bcrypt.compare(password,user.password, function(err, isValid){
+  Bcrypt.compare(request.payload.username,user.password, function(err, isValid){
     if(err){
       reply({success: false, error: err});
     } else if(isValid){
