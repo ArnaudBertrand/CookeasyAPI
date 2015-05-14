@@ -26,7 +26,21 @@ internals.contact = function (request, reply) {
 };
 
 internals.userLogin = function(request, reply){
-  reply(request.payload.password + ' ' + request.payload.username);
+  var user = User.find({username: request.payload.username});
+  if(!user){
+    return reply({success: false, error: 'User not found'});;
+  }
+
+  Bcrypt.compare(password,user.password, function(err, isValid){
+    if(err){
+      reply({success: false, error: err});
+    } else if(isValid){
+      reply({success: true});
+    } else{
+      reply({success: false, error: "Wrong password"});
+    }
+  });
+  
 };
 
 internals.userSignup = function(request, reply){
