@@ -4,7 +4,7 @@ var Basic = require('hapi-auth-basic');
 var Joi = require('joi');
 var Mongoose = require('mongoose');
 
-var handlers = {};
+var internals = {};
 var configs = {};
 
 // Create a server with a host and port
@@ -16,29 +16,60 @@ server.connection({
 });
 
 // Routes handlers
-handlers.get = function (request, reply) {
+internals.get = function (request, reply) {
   reply('Home page');
 };
 
-handlers.contact = function (request, reply) {
+internals.contact = function (request, reply) {
   reply('Contact page');
   console.log('test');
 };
 
-handlers.userLogin = function(request, reply){
-  console.log(request.payload);
-  console.log(request.payload.password);
-  console.log(request.payload["password"]);
+internals.userLogin = function(request, reply){
   reply(request.payload.password + ' ' + request.payload.username);
 };
 
-handlers.test = function(request, reply){
+internals.userSignup = function(request, reply){
+  // Generate salt
+  Bcrypt.genSalt(10, function(err, salt) {
+    if(err){
+      reply({saved: false, error: err});
+    } else{
+      // Generate hash
+      Bcrypt.hash(request.payload.password, salt, function(err, hash) {
+        if(err){
+          reply({saved: false, error: err});
+        } else{
+          // Save user in database
+          var newUser = new User({username: request.payload.username, password: hash});
+          newUser.save(function(err){
+            if(err){
+              reply({saved: false, error: err});
+            } else{
+              reply({saved: true});
+            }
+          });
+        }
+      });      
+    }
+  });
+};
+
+internals.test = function(request, reply){
   console.log(request.payload);
   console.log('test ok')
 }
+
+// Routes configurations
 configs.userLogin = {
   validate: { payload: {
-  	  username: Joi.string().min(3),
+      username: Joi.string().min(3),
+      password: Joi.string().min(3)
+  }}};
+
+configs.userSignup = {
+  validate: { payload: {
+      username: Joi.string().min(3),
       password: Joi.string().min(3)
   }}};
 
@@ -46,6 +77,7 @@ configs.userLogin = {
 server.route([
   { method: 'GET', path:'/', handler: handlers.get },
   { method: 'POST', path:'/user/login', handler: handlers.userLogin, config: configs.userLogin},
+  { method: 'POST', path:'/user/signup', handler: handlers.userSignup, config: configs.userSignup},
   { method: 'GET', path:'/hello', handler: handlers.contact }
 ]);
 
@@ -54,15 +86,15 @@ server.start(function(){ console.log('Server started at [' + server.info.uri + '
 
 // Validation
 var validate = function(username,password,callback){
-	// Find usernname
-	var user = User.find({});
-	if(!user){
-		return callback(null,false);
-	}
+  // Find usernname
+  var user = User.find({});
+  if(!user){
+    return callback(null,false);
+  }
 
-	Bcrypt.compare(password,user.password, function(err, isValid){
-	  callback(err, isValid, {id: user.id, username: user.username});
-	});
+  Bcrypt.compare(password,user.password, function(err, isValid){
+    callback(err, isValid, {id: user.id, username: user.username});
+  });
 };
 
 // Authentication
