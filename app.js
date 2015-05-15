@@ -34,15 +34,15 @@ internals.userLogin = function(request, reply){
     }
     if(!user){
       error = 'User not found';
+    } else {
+      user.comparePassword(request.payload.password, function(err, isValid){
+        if(err){
+          error = err;
+        } else if(!isValid){
+          error = "Wrong password";
+        }
+      });
     }
-
-    user.comparePassword(request.payload.password, function(err, isValid){
-      if(err){
-        error = err;
-      } else if(!isValid){
-        error = "Wrong password";
-      }
-    });
 
     console.log(error);
     if(error){
