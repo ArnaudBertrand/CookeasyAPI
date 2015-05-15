@@ -3,6 +3,7 @@ var Bcrypt = require('bcrypt');
 var Basic = require('hapi-auth-basic');
 var Joi = require('joi');
 var Mongoose = require('mongoose');
+var User = require('./mongoose/user.js');
 
 var internals = {};
 var configs = {};
@@ -26,45 +27,37 @@ internals.contact = function (request, reply) {
 };
 
 internals.userLogin = function(request, reply){
-  var user = User.find({username: request.payload.username});
+  var error = null;
+  User.findOne({username: request.payload.username}, function(err,user));
+  if(err){
+    error = err;
+  }
   if(!user){
-    return reply({success: false, error: 'User not found'});;
+    error = 'User not found';
   }
 
-  Bcrypt.compare(request.payload.username,user.password, function(err, isValid){
+  user.comparePassword(request.payload.username, function(err, isValid){
     if(err){
-      reply({success: false, error: err});
-    } else if(isValid){
-      reply({success: true});
-    } else{
-      reply({success: false, error: "Wrong password"});
+      error = err;
+    } else if(!isValid){
+      error = "Wrong password";
     }
   });
-  
+
+  if(error !== null){
+    reply({success: false, error: err});
+  } else{
+    reply({success: true});
+  }
 };
 
-internals.userSignup = function(request, reply){
-  // Generate salt
-  Bcrypt.genSalt(10, function(err, salt) {
+internals.userSignup = function(request, reply){  
+  var newUser = new User({username: request.payload.username, password: request.payload.username});
+  newUser.save(function(err){
     if(err){
       reply({saved: false, error: err});
     } else{
-      // Generate hash
-      Bcrypt.hash(request.payload.password, salt, function(err, hash) {
-        if(err){
-          reply({saved: false, error: err});
-        } else{
-          // Save user in database
-          var newUser = new User({username: request.payload.username, password: hash});
-          newUser.save(function(err){
-            if(err){
-              reply({saved: false, error: err});
-            } else{
-              reply({saved: true});
-            }
-          });
-        }
-      });      
+      reply({saved: true});
     }
   });
 };
@@ -124,9 +117,3 @@ db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function callback() {
     console.log("Connection with database succeeded.");
 });
-
-var userSchema = Mongoose.Schema({
-  username: {type: String, required: true, unique: true},
-  password: {type: String, required: true}
-});
-var User = Mongoose.model('users',userSchema);
