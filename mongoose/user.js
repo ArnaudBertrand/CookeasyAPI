@@ -22,22 +22,19 @@ UserSchema.pre('save', function(next) {
       return next(err);
     }
     // Override the cleartext password with the hashed one
-    console.log('Create: ' + hash);
-    console.log(user.password);
+    console.log('Create: ' + hash + ' - from : @' + user.password+'@');
     user.password = hash;
     next();
   });
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-  console.log('PWD test');
-  console.log(candidatePassword);
-  console.log(this.password);
+  console.log('PWD should be: ' + this.password + 'from : @' + candidatePassword +'@');
   bcrypt.hash(candidatePassword, SALT_WORK_FACTOR,function(err,hash){
     if (err){
       return cb(err);
     }
-    console.log(hash);
+    console.log('PWD hashed is : ' + hash);
     cb(null, hash === this.password);
   });
   /**bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
