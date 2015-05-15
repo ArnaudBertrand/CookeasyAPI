@@ -34,7 +34,7 @@ internals.userLogin = function(request, reply){
     if(!user){
       reply({success: false, error: 'User not found'});
     } else {
-      user.comparePassword(request.payload.password, function(err, isValid){
+      user.comparePassword(request.payload.password.trim(), function(err, isValid){
         if(err){
           reply({success: false, error: err});
         } else if(!isValid){
@@ -48,7 +48,7 @@ internals.userLogin = function(request, reply){
 };
 
 internals.userSignup = function(request, reply){  
-  var newUser = new User({username: request.payload.username, password: request.payload.username});
+  var newUser = new User({username: request.payload.username, password: request.payload.password.trim()});
   newUser.save(function(err){
     if(err){
       reply({saved: false, error: err});
