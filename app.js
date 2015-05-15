@@ -44,7 +44,8 @@ internals.userLogin = function(request, reply){
       }
     });
 
-    if(error !== null){
+    console.log(error);
+    if(error){
       reply({success: false, error: err});
     } else{
       reply({success: true});
