@@ -27,28 +27,29 @@ internals.contact = function (request, reply) {
 };
 
 internals.userLogin = function(request, reply){
-  var error = null;
-  User.findOne({username: request.payload.username}, function(err,user));
-  if(err){
-    error = err;
-  }
-  if(!user){
-    error = 'User not found';
-  }
-
-  user.comparePassword(request.payload.username, function(err, isValid){
+  User.findOne({username: request.payload.username}, function(err,user){
+    var error = null;
     if(err){
       error = err;
-    } else if(!isValid){
-      error = "Wrong password";
+    }
+    if(!user){
+      error = 'User not found';
+    }
+
+    user.comparePassword(request.payload.username, function(err, isValid){
+      if(err){
+        error = err;
+      } else if(!isValid){
+        error = "Wrong password";
+      }
+    });
+
+    if(error !== null){
+      reply({success: false, error: err});
+    } else{
+      reply({success: true});
     }
   });
-
-  if(error !== null){
-    reply({success: false, error: err});
-  } else{
-    reply({success: true});
-  }
 };
 
 internals.userSignup = function(request, reply){  
