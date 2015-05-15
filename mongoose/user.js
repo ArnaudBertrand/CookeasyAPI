@@ -39,13 +39,20 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   console.log('PWD test');
   console.log(candidatePassword);
   console.log(this.password);
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+  bcrypt.hash(candidatePassword, SALT_WORK_FACTOR,function(err,hash){
+    if (err){
+      return cb(err);
+    }
+    console.log(hash);
+    cb(null, hash === this.password);
+  });
+  /**bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
     console.log(isMatch);
     if (err){
       return cb(err);
     }
     cb(null, isMatch);
-  });
+  });*/
 };
 
 module.exports = mongoose.model('User', UserSchema);
