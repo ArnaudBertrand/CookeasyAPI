@@ -28,27 +28,21 @@ internals.contact = function (request, reply) {
 
 internals.userLogin = function(request, reply){
   User.findOne({username: request.payload.username}, function(err,user){
-    var error = null;
     if(err){
-      error = err;
+      reply({success: false, error: err});
     }
     if(!user){
-      error = 'User not found';
+      reply({success: false, error: 'User not found'});
     } else {
       user.comparePassword(request.payload.password, function(err, isValid){
         if(err){
-          error = err;
+          reply({success: false, error: err});
         } else if(!isValid){
-          error = "Wrong password";
+          reply({success: false, error: 'Wrong password'});
+        } else {
+          reply({success: true});
         }
       });
-    }
-
-    console.log(error);
-    if(error){
-      reply({success: false, error: err});
-    } else{
-      reply({success: true});
     }
   });
 };
