@@ -1,7 +1,7 @@
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
+var Mongoose = require('mongoose'),
+  Schema = Mongoose.Schema,
   bcrypt = require('bcrypt'),
-  SALT_WORK_FACTOR = 10;
+  SALT_WORK_FACTOR = 12;
 
 var UserSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
@@ -22,16 +22,13 @@ UserSchema.pre('save', function(next) {
       return next(err);
     }
     // Override the cleartext password with the hashed one
-    console.log('Create: ' + hash + ' - from : @' + user.password+'@');
     user.password = hash;
     next();
   });
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-  console.log('PWD should be: ' + this.password + 'from : @' + candidatePassword +'@');
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    console.log(isMatch);
     if (err){
       return cb(err);
     }
@@ -39,4 +36,4 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = Mongoose.model('User', UserSchema);
