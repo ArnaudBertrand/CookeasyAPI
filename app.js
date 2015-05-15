@@ -36,7 +36,7 @@ internals.userLogin = function(request, reply){
       error = 'User not found';
     }
 
-    user.comparePassword(request.payload.username, function(err, isValid){
+    user.comparePassword(request.payload.password, function(err, isValid){
       if(err){
         error = err;
       } else if(!isValid){
