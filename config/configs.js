@@ -1,3 +1,5 @@
+var Joi = require('joi');
+
 var configs = {};
 
 configs.userLogin = {
