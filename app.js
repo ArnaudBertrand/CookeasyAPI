@@ -1,7 +1,6 @@
 var Hapi = require('hapi');
 var Bcrypt = require('bcrypt');
 var Basic = require('hapi-auth-basic');
-var db = require('./mongoose/mongoose.js');
 var internals = require('./config/handlers.js');
 var configs = require('./config/configs.js');
 
