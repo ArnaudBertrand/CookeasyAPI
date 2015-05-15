@@ -1,4 +1,4 @@
-var db = require('./mongoose/mongoose.js');
+var db = require('./../mongoose/mongoose.js');
 var User = db.User;
 var internals = {};
 
