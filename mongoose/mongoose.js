@@ -1,5 +1,5 @@
 var Mongoose = require('mongoose');
-var User = require('./mongoose/user.js');
+var User = require('./user.js');
 
 // Connect to database
 Mongoose.connect('mongodb://cookeasyapi:apiPASSWORD@ds061731.mongolab.com:61731/heroku_app36784651');
