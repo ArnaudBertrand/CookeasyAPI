@@ -15,7 +15,14 @@ internals.contact = function (req, res) {
 };
 
 internals.userLogin = function(req, res){
-  User.findOne({username: req.body.username}, function(err,user){
+  var username = req.body.username || '';
+  var password = req.body.password || '';
+  // Check params
+  if(username == '' || password == ''){
+    return res.send(401);
+  }
+  // Find user
+  User.findOne({username: username}, function(err,user){
     // Check for errors
     if(err){
       return res.send({success: false, error: err});
@@ -25,7 +32,7 @@ internals.userLogin = function(req, res){
       return res.send({success: false, error: 'User not found'});
     }
     // Check for password
-    user.comparePassword(req.body.password.trim(), function(err, isValid){
+    user.comparePassword(password, function(err, isValid){
       if(err){
         res.send({success: false, error: err});
       } else if(!isValid){
@@ -39,15 +46,27 @@ internals.userLogin = function(req, res){
 };
 
 internals.userSignup = function(req, res){  
-  var newUser = new User({username: req.body.username, password: req.body.password.trim()});
-  newUser.save(function(err){
-    if(err){
-      res.send({saved: false, error: err});
-    } else{
-      var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
-      res.send({success: true, token: token});
-    }
-  });
+  var username = req.body.username || '';
+  var password = req.body.password || '';
+  // Check params
+  if(username == '' || password == ''){
+    return res.send(401);
+  }
+  // Find if user exists
+  User.findOne({username: username}, function(err,user){
+    console.log(err);
+    console.log(user);
+    /**
+    var newUser = new User({username: req.body.username, password: req.body.password.trim()});
+    newUser.save(function(err){
+      if(err){
+        res.send({saved: false, error: err});
+      } else{
+        var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
+        res.send({success: true, token: token});
+      }
+    });**/    
+  }
 };
 
 module.exports = internals;
