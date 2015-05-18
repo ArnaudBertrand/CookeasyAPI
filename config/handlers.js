@@ -1,6 +1,8 @@
+var jwt = require('express-jwt');
 var db = require('./../mongoose/mongoose.js');
 var User = db.User;
 var internals = {};
+
 
 // Routes handlers
 internals.get = function (req, res) {
@@ -29,7 +31,8 @@ internals.userLogin = function(req, res){
       } else if(!isValid){
         res.send({success: false, error: 'Wrong password'});
       } else {
-        res.send({success: true});
+        var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
+        res.send({success: true, token: token});
       }
     });
   });
@@ -41,7 +44,8 @@ internals.userSignup = function(req, res){
     if(err){
       res.send({saved: false, error: err});
     } else{
-      res.send({saved: true});
+      var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
+      res.send({success: true, token: token});
     }
   });
 };
