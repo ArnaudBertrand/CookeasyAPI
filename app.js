@@ -1,43 +1,31 @@
-var Hapi = require('hapi');
+var express = require('express');
+var morgan = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var Bcrypt = require('bcrypt');
-var Basic = require('hapi-auth-basic');
 var internals = require('./config/handlers.js');
-var configs = require('./config/configs.js');
 
+var app = express();
+var port = process.env.PORT || 3000;
+
+// Set up
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+// Routes
+var router = express.Router();
+router.get('/', internals.get);
+router.post('/user/login', internals.userLogin);
+router.post('/user/signup', internals.userSignup);
+router.get('/hello', internals.contact);
+
+app.use('/',router);
 // Create a server with a host and port
-var server = new Hapi.Server();
-server.connection({ 
-  host: '0.0.0.0', 
-  port: +process.env.PORT,
-  routes: {cors: true}
-});
+var server = app.listen(port,function(){
+  var host = server.adresses().adresses;
+  var port = server.adresses().port;
 
-// Routes definitions
-server.route([
-  { method: 'GET', path:'/', handler: internals.get },
-  { method: 'POST', path:'/user/login', handler: internals.userLogin, config: configs.userLogin},
-  { method: 'POST', path:'/user/signup', handler: internals.userSignup, config: configs.userSignup},
-  { method: 'GET', path:'/hello', handler: internals.contact }
-]);
-
-// Start the server
-server.start(function(){ console.log('Server started at [' + server.info.uri + ']'); });
-
-// Validation
-var validate = function(username,password,callback){
-  // Find usernname
-  var user = User.find({});
-  if(!user){
-    return callback(null,false);
-  }
-
-  Bcrypt.compare(password,user.password, function(err, isValid){
-    callback(err, isValid, {id: user.id, username: user.username});
-  });
-};
-
-// Authentication
-server.register(Basic, function (err) {
-    server.auth.strategy('simple', 'basic', { validateFunc: validate });
-    server.route({ method: 'GET', path: '/test', handler: internals.test, config: { auth: 'simple' } });
+  console.log('Example app listening at http://%s:%s', host, port);  
 });

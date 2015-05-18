@@ -4,11 +4,12 @@
   "description": "REST Api for Cookeazy",
   "main": "app.js",
   "dependencies": {
-    "hapi": "^8.4.0",
-    "joi": "^4.6.2",
+    "express": "~4.0.0",
+    "morgan": "~1.0.0",
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.0",
     "mongoose": "4.0.2",
-    "bcrypt": ">=0.5.x",
-    "hapi-auth-basic": "2.0.0"
+    "bcrypt": ">=0.5.x"
   },
   "devDependencies": {},
   "scripts": {

@@ -3,50 +3,47 @@ var User = db.User;
 var internals = {};
 
 // Routes handlers
-internals.get = function (request, reply) {
-  reply('Home page');
+internals.get = function (req, res) {
+  res.send('Home page');
 };
 
-internals.contact = function (request, reply) {
-  reply('Contact page');
+internals.contact = function (req, res) {
+  res.send('Contact page');
   console.log('test');
 };
 
-internals.userLogin = function(request, reply){
-  User.findOne({username: request.payload.username}, function(err,user){
+internals.userLogin = function(req, res){
+  User.findOne({username: req.params.username}, function(err,user){
+    // Check for errors
     if(err){
-      reply({success: false, error: err});
+      return res.send({success: false, error: err});
     }
+    // Check for user
     if(!user){
-      reply({success: false, error: 'User not found'});
-    } else {
-      user.comparePassword(request.payload.password.trim(), function(err, isValid){
-        if(err){
-          reply({success: false, error: err});
-        } else if(!isValid){
-          reply({success: false, error: 'Wrong password'});
-        } else {
-          reply({success: true});
-        }
-      });
+      return res.send({success: false, error: 'User not found'});
     }
+    // Check for password
+    user.comparePassword(req.params.password.trim(), function(err, isValid){
+      if(err){
+        res.send({success: false, error: err});
+      } else if(!isValid){
+        res.send({success: false, error: 'Wrong password'});
+      } else {
+        res.send({success: true});
+      }
+    });
   });
 };
 
-internals.userSignup = function(request, reply){  
-  var newUser = new User({username: request.payload.username, password: request.payload.password.trim()});
+internals.userSignup = function(req, res){  
+  var newUser = new User({username: req.params.username, password: req.params.password.trim()});
   newUser.save(function(err){
     if(err){
-      reply({saved: false, error: err});
+      res.send({saved: false, error: err});
     } else{
-      reply({saved: true});
+      res.send({saved: true});
     }
   });
 };
-
-internals.test = function(request, reply){
-  console.log(request.payload);
-  console.log('test ok')
-}
 
 module.exports = internals;
