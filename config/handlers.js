@@ -1,6 +1,6 @@
 var jwt = require('express-jwt');
 var db = require('./../mongoose/mongoose.js');
-var secret = require('./config/secret.js');
+var secret = require('./secret.js');
 var User = db.User;
 var internals = {};
 
