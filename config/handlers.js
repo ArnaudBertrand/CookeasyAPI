@@ -13,7 +13,7 @@ internals.contact = function (req, res) {
 };
 
 internals.userLogin = function(req, res){
-  User.findOne({username: req.params.username}, function(err,user){
+  User.findOne({username: req.body.username}, function(err,user){
     // Check for errors
     if(err){
       return res.send({success: false, error: err});
@@ -23,7 +23,7 @@ internals.userLogin = function(req, res){
       return res.send({success: false, error: 'User not found'});
     }
     // Check for password
-    user.comparePassword(req.params.password.trim(), function(err, isValid){
+    user.comparePassword(req.body.password.trim(), function(err, isValid){
       if(err){
         res.send({success: false, error: err});
       } else if(!isValid){
@@ -36,7 +36,7 @@ internals.userLogin = function(req, res){
 };
 
 internals.userSignup = function(req, res){  
-  var newUser = new User({username: req.params.username, password: req.params.password.trim()});
+  var newUser = new User({username: req.body.username, password: req.body.password.trim()});
   newUser.save(function(err){
     if(err){
       res.send({saved: false, error: err});
