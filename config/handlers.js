@@ -1,4 +1,4 @@
-var jwt = require('express-jwt');
+var jwt = require('jsonwebtokens');
 var db = require('./../mongoose/mongoose.js');
 var secret = require('./secret.js');
 var User = db.User;
