@@ -28,7 +28,7 @@ router.get('/', internals.get);
 router.post('/user/login', internals.userLogin);
 router.post('/user/signup', internals.userSignup);
 router.get('/hello', internals.contact);
-router.get('/private', jwt({secret: secret.secretToken}), tokenManager.verifyToken)
+router.get('/private', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.priv);
 
 app.use('/',router);
 // Create a server with a host and port

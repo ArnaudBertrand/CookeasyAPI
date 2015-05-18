@@ -70,4 +70,8 @@ internals.userSignup = function(req, res){
   });
 };
 
+internals.priv = function(req,res){
+  res.send('Ok passed');
+}
+
 module.exports = internals;
