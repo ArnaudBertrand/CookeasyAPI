@@ -3,6 +3,7 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var Bcrypt = require('bcrypt');
+var jwt = require('express-jwt');
 var internals = require('./config/handlers.js');
 var secret = require('./config/secret.js');
 var tokenManager = require('./config/token_manager.js');
