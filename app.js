@@ -23,9 +23,4 @@ router.get('/hello', internals.contact);
 
 app.use('/',router);
 // Create a server with a host and port
-var server = app.listen(port,function(){
-  var host = server.adresses().adresses;
-  var port = server.adresses().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);  
-});
+var server = app.listen(port);
