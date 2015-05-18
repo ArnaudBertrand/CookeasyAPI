@@ -4,6 +4,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var Bcrypt = require('bcrypt');
 var internals = require('./config/handlers.js');
+var secret = require('./config/secret.js');
+var tokenManager = require('./config/token_manager.js');
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -26,6 +28,7 @@ router.get('/', internals.get);
 router.post('/user/login', internals.userLogin);
 router.post('/user/signup', internals.userSignup);
 router.get('/hello', internals.contact);
+router.get('/private', jwt({secret: secret.secretToken}), tokenManager.verifyToken)
 
 app.use('/',router);
 // Create a server with a host and port

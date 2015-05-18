@@ -10,7 +10,8 @@
     "cookie-parser": "~1.0.0",
     "mongoose": "4.0.2",
     "bcrypt": ">=0.5.x",
-    "express-jwt": "~3.0.0"
+    "express-jwt": "~3.0.0",
+    "redis":"~0.12.1"
   },
   "devDependencies": {},
   "scripts": {
