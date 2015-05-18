@@ -66,8 +66,8 @@ internals.userSignup = function(req, res){
         var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
         res.send({success: true, token: token});
       }
-    });**/    
-  }
+    });***/
+  });
 };
 
 module.exports = internals;
