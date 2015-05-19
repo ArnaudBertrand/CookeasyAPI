@@ -1,4 +1,6 @@
 var Mongoose = require('mongoose');
+var Ingredient = require('./Ingredient.js');
+var Recipe = require('./recipe.js');
 var User = require('./user.js');
 
 // Connect to database
