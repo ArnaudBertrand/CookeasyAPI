@@ -5,7 +5,7 @@ var RecipeSchema = new Schema({
   name: { type: String, required: true },
   course: { type: Number, required: true },
   type: { type: Number, required: true },
-  ingredients: [Schema.Types.Ingredient],
+  ingredients: [Schema.Types.Mixed],
   steps: [Schema.Types.Mixed]
 });
 
