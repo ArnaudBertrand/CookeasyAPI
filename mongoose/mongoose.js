@@ -11,4 +11,4 @@ db.once('open', function callback() {
     console.log("Connection with database succeeded.");
 });
 
-module.exports = {connection: db, User: User};
+module.exports = {connection: db, Ingredient: Ingredient, Recipe: Recipe, User: User};

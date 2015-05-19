@@ -3,7 +3,7 @@ var Mongoose = require('mongoose'),
 
 var IngredientSchema = new Schema({
   name: { type: String, required: true, index: { unique: true } },
-  type: { type: Number, required: true },
+  type: { type: Number },
   tip: { type: String },
   picture: { type: String }
 });
