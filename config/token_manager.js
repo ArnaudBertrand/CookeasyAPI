@@ -27,7 +27,7 @@ exports.expireToken = function(headers) {
   
   if (token != null) {
     redisClient.set(token, { is_expired: true });
-      redisClient.expire(token, TOKEN_EXPIRATION_SEC);
+    redisClient.expire(token, TOKEN_EXPIRATION_SEC);
   }
 };
 

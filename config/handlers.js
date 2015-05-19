@@ -55,18 +55,19 @@ internals.userSignup = function(req, res){
   }
   // Find if user exists
   User.findOne({username: username}, function(err,user){
-    console.log(err);
-    console.log(user);
-    /**
+    if(user){
+      return res.send({success: false, error: 'Login already exist'});
+    }
+
     var newUser = new User({username: req.body.username, password: req.body.password.trim()});
     newUser.save(function(err){
       if(err){
-        res.send({saved: false, error: err});
+        res.send({success: false, error: err});
       } else{
         var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
         res.send({success: true, token: token});
       }
-    });***/
+    });
   });
 };
 
