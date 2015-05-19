@@ -12,7 +12,7 @@ internals.create = function (req, res) {
   var ingredients = req.body.ingredients || [];
   var steps = req.body.steps || [];
   var user = req.user;
-
+/*
   // Check parameters
   if(typeof name !== "string" || typeof course !== "number" || course !== parseInt(course,10) || typeof type !== "number" ||
    type !== parseInt(type,10) || !(ingredients instanceof array) || !(steps instanceof array)){
@@ -63,7 +63,7 @@ internals.create = function (req, res) {
       return res.send({success:false, error: "Invalid parameters in step"});
     }
   });
-
+*/
   // Create the recipe
   var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps});
   recipe.save(function(err){
