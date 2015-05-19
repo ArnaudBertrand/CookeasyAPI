@@ -73,6 +73,7 @@ internals.userSignup = function(req, res){
 
 internals.priv = function(req,res){
   res.send('Ok passed');
+  console.log(req.user);
 }
 
 module.exports = internals;
