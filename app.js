@@ -6,8 +6,8 @@ var jwt = require('express-jwt');
 var secret = require('./config/secret.js');
 var tokenManager = require('./config/token_manager.js');
 var internals = {};
-var internals.user = require('./handlers/user.js');
-var internals.diverse = require('./handlers/diverse.js');
+internals.user = require('./handlers/user.js');
+internals.diverse = require('./handlers/diverse.js');
 
 var app = express();
 var port = process.env.PORT || 3000;
