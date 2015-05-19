@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var secret = require('./config/secret.js');
 var tokenManager = require('./config/token_manager.js');
-var internals = {}
+var internals = {};
 var internals.user = require('./handlers/user.js');
 var internals.diverse = require('./handlers/diverse.js');
 
