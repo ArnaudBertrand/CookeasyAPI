@@ -74,11 +74,11 @@ internals.create = function (req, res) {
 internals.get = function(req,res){
   res.send('Ok passed');
   console.log(req.user);
-}
+};
 
 internals.delete = function(req,res){
   res.send('Ok passed');
   console.log(req.user);
-}
+};
 
 module.exports = internals;
