@@ -8,6 +8,7 @@ var tokenManager = require('./config/token_manager.js');
 var internals = {};
 internals.user = require('./handlers/user.js');
 internals.diverse = require('./handlers/diverse.js');
+internals.recipe = require('./handlers/recipe.js');
 
 var app = express();
 var port = process.env.PORT || 3000;
