@@ -66,7 +66,7 @@ internals.create = function (req, res) {
   var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps});
   recipe.save(function(err){
     res.send({success:true});
-  }
+  });
 };
 
 internals.get = function(req,res){
