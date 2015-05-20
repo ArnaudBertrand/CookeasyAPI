@@ -6,7 +6,7 @@ var internals = {};
 
 // Routes handlers
 internals.create = function (req, res) {
-  var name = req.body.title || '';
+  var name = req.body.name || '';
   var course = req.body.course || -1;
   var type = req.body.type || -1;
   var ingredients = req.body.ingredients || [];
