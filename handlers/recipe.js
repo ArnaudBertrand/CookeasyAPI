@@ -15,10 +15,10 @@ internals.create = function (req, res) {
 
   // Check parameters
   if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof type !== "number") || (type !== parseInt(type,10)) || !(ingredients instanceof Array) || !(steps instanceof Array)){
-    return res.send({success:false, error: "Wrongs parameters types"});
+    return res.send({error: "Wrongs parameters types"});
   }
   if(!user || name == '' || course == -1 || type == -1 || ingredients.length == 0 || steps.length == 0){
-    return res.send({success:false, error: "Missing parameters"});
+    return res.send({error: "Missing parameters"});
   }
   // Check ingredients
   ingredients.forEach(function(ingredient){
@@ -27,18 +27,18 @@ internals.create = function (req, res) {
     var unit = ingredient.unit || '';
 
     if(typeof name != "string" || typeof qte !== "number" || typeof unit !== "string"){
-      return res.send({success:false, error: "Invalid type parameters for ingredient"});
+      return res.send({error: "Invalid type parameters for ingredient"});
     }
 
     if(name == ''){
-      return res.send({success:false, error: "Invalid ingredient name"});
+      return res.send({error: "Invalid ingredient name"});
     }
     name = name.toLowerCase();
     if(Ingredient.where({name: name}).count()){
       var ing = new Ingredient({name: name});
       ing.save(function(err){
         if(err){
-          return res.send({success:false, error: "No name for ingredient"});
+          return res.send({error: err});
         }
       });
     }
@@ -55,17 +55,17 @@ internals.create = function (req, res) {
 
     // Check parameters
     if((typeof action !== "string")  || (typeof stepnb !== "number") || (typeof time !== "number") || (typeof picture !== "string")){
-      return res.send({success:false, error: "Invalid type parameters in step"});
+      return res.send(error: "Invalid type parameters in step"});
     }
     if(action == '' || stepnb !== stepCount){
-      return res.send({success:false, error: "Invalid parameters in step"});
+      return res.send(error: "Invalid parameters in step"});
     }
   });
 
   // Create the recipe
   var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps, author: req.user.username});
   recipe.save(function(err){
-    res.send({success:true, id: recipe._id});
+    res.send({id: recipe._id});
   });
 };
 
