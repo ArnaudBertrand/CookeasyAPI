@@ -59,3 +59,5 @@ internals.signup = function(req, res){
     });
   });
 };
+
+module.exports = internals;
