@@ -70,23 +70,24 @@ internals.create = function (req, res) {
 };
 
 internals.get = function(req,res){
-  var recipe = Recipe.findOne({_id: req.params.id});
-  if(recipe){
-    console.log(recipe);
-    res.send({success: true, recipe: recipe});    
-  } else {
-    res.send({error: "Recipe does not exist"});
-  }
+  Recipe.findOne({_id: req.params.id},function(err, recipe){
+    if(recipe){
+      console.log(recipe);
+      res.send({success: true, recipe: recipe});
+    } else {
+      res.send({error: "Recipe does not exist"});
+    }
+  });
 };
 
 internals.delete = function(req,res){
   var user = req.user;
-  var recipe = Recipe.findOneAndRemove({_id: req.params.id, author: req.user.username});
-  if(recipe){
-    res.send({success: true, recipe: recipe});
-  } else {
-    res.send({error: "Recipe does not exist"});
-  }
+  Recipe.findOneAndRemove({_id: req.params.id, author: req.user.username}, function(err){
+    if(err){
+      res.send({error: err});
+    }
+    res.send({success: true});
+  });
 };
 
 module.exports = internals;
