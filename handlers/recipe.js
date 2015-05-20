@@ -55,10 +55,10 @@ internals.create = function (req, res) {
 
     // Check parameters
     if((typeof action !== "string")  || (typeof stepnb !== "number") || (typeof time !== "number") || (typeof picture !== "string")){
-      return res.send(error: "Invalid type parameters in step"});
+      return res.send({error: "Invalid type parameters in step"});
     }
     if(action == '' || stepnb !== stepCount){
-      return res.send(error: "Invalid parameters in step"});
+      return res.send({error: "Invalid parameters in step"});
     }
   });
 
