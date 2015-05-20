@@ -34,7 +34,7 @@ internals.create = function (req, res) {
       return res.send({error: "Invalid ingredient name"});
     }
     name = name.toLowerCase();
-    if(Ingredient.where({name: name}).count()){
+    if(!Ingredient.where({name: name}).count()){
       var ing = new Ingredient({name: name});
       ing.save(function(err){
         if(err){
