@@ -12,10 +12,9 @@ internals.create = function (req, res) {
   var ingredients = req.body.ingredients || [];
   var steps = req.body.steps || [];
   var user = req.user;
-/*
+
   // Check parameters
-  if(typeof name !== "string" || typeof course !== "number" || course !== parseInt(course,10) || typeof type !== "number" ||
-   type !== parseInt(type,10) || !(ingredients instanceof array) || !(steps instanceof array)){
+  if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof type !== "number") || (type !== parseInt(type,10)) || !(ingredients instanceof array) || !(steps instanceof array)){
     return res.send({success:false, error: "Wrongs parameters types"});
   }
   if(!user || name == '' || course == -1 || type == -1 || ingredients.length == 0 || steps.length == 0){
@@ -44,7 +43,6 @@ internals.create = function (req, res) {
       });
     }
   });
-*/
 
   // Check steps
   var stepCount = 0;
@@ -56,7 +54,7 @@ internals.create = function (req, res) {
     var photo = step.time || '';
 
     // Check parameters
-    if(typeof action !== "string"  || typeof stepnb !== "number" || typeof time !== "number" || typeof photo !== "string"){
+    if((typeof action !== "string")  || (typeof stepnb !== "number") || (typeof time !== "number") || (typeof photo !== "string")){
       return res.send({success:false, error: "Invalid type parameters in step"});
     }
     if(action == '' || stepnb !== stepCount){
