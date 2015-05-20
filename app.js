@@ -34,7 +34,7 @@ router.post('/user/signup', internals.user.signup);
 
 // Privates routes
 router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
-router.get('/recipe/delete', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.delete);
+router.get('/recipe/delete/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.delete);
 
 app.use('/',router);
 // Create a server with a host and port

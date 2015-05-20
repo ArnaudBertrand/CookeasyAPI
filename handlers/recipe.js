@@ -63,20 +63,29 @@ internals.create = function (req, res) {
   });
 
   // Create the recipe
-  var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps});
+  var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps, author: req.user.username});
   recipe.save(function(err){
-    res.send({success:true});
+    res.send({success:true, id: recipe._id});
   });
 };
 
 internals.get = function(req,res){
-  res.send('Ok passed');
-  console.log(req.user);
+  var recipe = Recipe.findOne({_id: req.params.id});
+  if(recipe){
+    res.send({success: true, recipe: recipe});    
+  } else {
+    res.send({error: "Recipe does not exist"});
+  }
 };
 
 internals.delete = function(req,res){
-  res.send('Ok passed');
-  console.log(req.user);
+  var user = req.user;
+  var recipe = Recipe.findOneAndRemove({_id: req.params.id, author: req.user.username});
+  if(recipe){
+    res.send({success: true, recipe: recipe});    
+  } else {
+    res.send({error: "Recipe does not exist"});
+  }
 };
 
 module.exports = internals;
