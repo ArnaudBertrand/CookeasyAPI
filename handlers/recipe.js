@@ -14,7 +14,7 @@ internals.create = function (req, res) {
   var user = req.user;
 
   // Check parameters
-  if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof type !== "number") || (type !== parseInt(type,10)) || !(ingredients instanceof array) || !(steps instanceof array)){
+  if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof type !== "number") || (type !== parseInt(type,10)) || !(ingredients instanceof Array) || !(steps instanceof Array)){
     return res.send({success:false, error: "Wrongs parameters types"});
   }
   if(!user || name == '' || course == -1 || type == -1 || ingredients.length == 0 || steps.length == 0){
