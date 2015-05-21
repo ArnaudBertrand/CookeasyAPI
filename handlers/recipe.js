@@ -4,7 +4,7 @@ var Ingredient = db.Ingredient;
 var internals = {};
 
 internals.addComment = function(req, res){
-  var message = res.body.comment || '';
+  var message = req.body.comment || '';
 
   if(typeof message !== "string"){
     return res.send({error: "Wrongs parameters types"});
