@@ -5,7 +5,6 @@ var internals = {};
 
 internals.addComment = function(req, res){
   var message = req.body.comment || '';
-  console.log(req.body);
   // Check parameter
   if(typeof message !== "string"){
     return res.send({error: "Wrongs parameters types"});
@@ -20,11 +19,11 @@ internals.addComment = function(req, res){
   var comment = {author: user, message: message, date: Date.now()};
 
   // Add comment
-  Recipe.findByIdAndUpdate(req.params.id,{$push: {'comments': comment}},function(err, model){
+  Recipe.findByIdAndUpdate(req.params.id,{$push: {'comments': comment}, {upsert: true}},function(err, model){
     if(err){
       return res.send({error: err});
     }
-    res.send(model);
+    res.send(model.comments);
   });
 }
 
