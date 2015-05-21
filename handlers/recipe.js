@@ -5,7 +5,7 @@ var internals = {};
 
 internals.addComment = function(req, res){
   var message = req.body.comment || '';
-
+  console.log(message);
   // Check parameter
   if(typeof message !== "string"){
     return res.send({error: "Wrongs parameters types"});
