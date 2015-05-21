@@ -3,6 +3,20 @@ var Recipe = db.Recipe;
 var Ingredient = db.Ingredient;
 var internals = {};
 
+internals.addComment = function(req, res){
+  var comment = res.body.comment || '';
+
+  if(typeof comment !== "string"){
+    return res.send({error: "Wrongs parameters types"});
+  }
+
+  Recipe.findByIdAndUpdate(req.params.id,{$push: {'comments': comment}},function(err, model){
+    if(err){
+      return res.send({error: err});
+    }
+    res.send(model);
+  });
+}
 
 // Routes handlers
 internals.create = function (req, res) {
@@ -20,17 +34,21 @@ internals.create = function (req, res) {
   if(!user || name == '' || course == -1 || type == -1 || ingredients.length == 0 || steps.length == 0){
     return res.send({error: "Missing parameters"});
   }
+
   // Check ingredients
+  var stop = false;
   ingredients.forEach(function(ingredient){
     var name = ingredient.name || '';
     var qte = ingredient.qte || 0;
     var unit = ingredient.unit || '';
 
     if(typeof name != "string" || typeof qte !== "number" || typeof unit !== "string"){
+      stop = true;
       return res.send({error: "Invalid type parameters for ingredient"});
     }
 
     if(name == ''){
+      stop = true;
       return res.send({error: "Invalid ingredient name"});
     }
     name = name.toLowerCase();
@@ -55,12 +73,19 @@ internals.create = function (req, res) {
 
     // Check parameters
     if((typeof action !== "string")  || (typeof stepnb !== "number") || (typeof time !== "number") || (typeof picture !== "string")){
+      stop = true;
       return res.send({error: "Invalid type parameters in step"});
     }
     if(action == '' || stepnb !== stepCount){
+      stop = true;
       return res.send({error: "Invalid parameters in step"});
     }
   });
+
+  // Do not save if an error occured during loops
+  if(stop){
+    return;
+  }
 
   // Create the recipe
   var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps, author: req.user.username});
