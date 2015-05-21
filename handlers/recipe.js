@@ -6,13 +6,20 @@ var internals = {};
 internals.addComment = function(req, res){
   var message = req.body.comment || '';
 
+  // Check parameter
   if(typeof message !== "string"){
     return res.send({error: "Wrongs parameters types"});
   }
+  if(message.length < 10 || message.length > 255){
+    return res.send({error: "Message should be between 10 and 255 characters"});
+  }
+
+  // Set user
   var user = {};
   user.name = req.user.username;
   var comment = {author: user, message: message, date: Date.now()};
 
+  // Add comment
   Recipe.findByIdAndUpdate(req.params.id,{$push: {'comments': comment}},function(err, model){
     if(err){
       return res.send({error: err});
