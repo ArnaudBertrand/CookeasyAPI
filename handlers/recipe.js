@@ -4,11 +4,14 @@ var Ingredient = db.Ingredient;
 var internals = {};
 
 internals.addComment = function(req, res){
-  var comment = res.body.comment || '';
+  var message = res.body.comment || '';
 
-  if(typeof comment !== "string"){
+  if(typeof message !== "string"){
     return res.send({error: "Wrongs parameters types"});
   }
+  var user = {};
+  user.name = req.user.username;
+  var comment = {author: user, message: message, date: Date.now()};
 
   Recipe.findByIdAndUpdate(req.params.id,{$push: {'comments': comment}},function(err, model){
     if(err){
