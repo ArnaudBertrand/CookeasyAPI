@@ -17,6 +17,7 @@ internals.addComment = function(req, res){
   var user = {};
   user.name = req.user.username;
   var comment = {author: user, message: message, date: Date.now()};
+  console.log(comment);
 
   // Add comment
   Recipe.findByIdAndUpdate(req.params.id,{$push: {'comments': comment}}, {upsert: true},function(err, model){
