@@ -123,4 +123,8 @@ internals.delete = function(req,res){
   });
 };
 
+internals.test = function(req,res){
+  res.send({success: true});
+};
+
 module.exports = internals;
