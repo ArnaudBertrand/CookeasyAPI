@@ -5,14 +5,14 @@ var User = db.User;
 var internals = {};
 
 internals.login = function(req, res){
-  var username = req.body.username || '';
+  var email = req.body.email || '';
   var password = req.body.password || '';
   // Check params
-  if(username == '' || password == ''){
+  if(email == '' || password == ''){
     return res.send(401);
   }
   // Find user
-  User.findOne({username: username}, function(err,user){
+  User.findOne({email: email}, function(err,user){
     // Check for errors
     if(err){
       return res.send({success: false, error: err});
@@ -35,23 +35,24 @@ internals.login = function(req, res){
   });
 };
 
-internals.signup = function(req, res){  
+internals.signup = function(req, res){
+  var email = req.body.email || '';
   var username = req.body.username || '';
   var password = req.body.password || '';
   // Check params
-  if(username == '' || password == ''){
+  if(email == '' || username == '' || password == ''){
     return res.send(401);
   }
   // Find if user exists
-  User.findOne({username: username}, function(err,user){
+  User.findOne({email: email}, function(err,user){
     if(user){
-      return res.send({success: false, error: 'Login already exist'});
+      return res.send({error: 'E-mail already exist'});
     }
 
-    var newUser = new User({username: req.body.username, password: req.body.password.trim()});
+    var newUser = new User({email: email, username: username, password: password});
     newUser.save(function(err){
       if(err){
-        res.send({success: false, error: err});
+        res.send({error: err});
       } else{
         var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
         res.send({success: true, token: token});

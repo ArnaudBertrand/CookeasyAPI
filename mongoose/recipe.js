@@ -8,7 +8,10 @@ var RecipeSchema = new Schema({
   ingredients: [],
   steps: [],
   author: String,
-  comments: []
+  comments: [],
+  utensils: [],
+  difficulty: Number,
+  imageUrl: String
 });
 
 module.exports = Mongoose.model('Recipe', RecipeSchema);
