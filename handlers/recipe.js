@@ -125,6 +125,7 @@ internals.delete = function(req,res){
 
 internals.uploadPicture = function(req,res){
   console.log(req.files);
+  res.send(req.files.image.path);
   //var imageStream = fs.createReadStream(req.files.image.path, { encoding: 'binary' })
   //  , cloudStream = cloudinary.uploader.upload_stream(function() { res.redirect('/recipes/'); });
   //imageStream.on('data', cloudStream.write).on('end', cloudStream.end);re
