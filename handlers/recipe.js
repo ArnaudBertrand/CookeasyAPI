@@ -4,6 +4,9 @@ var db = require('./../mongoose/mongoose.js'),
   Ingredient = db.Ingredient,
   internals = {};
 
+// Cloudinary config - Image storing
+cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
+
 internals.addComment = function(req, res){
   var message = req.body.comment || '';
   // Check parameter
