@@ -1,17 +1,22 @@
-var express = require('express');
-var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var jwt = require('express-jwt');
-var secret = require('./config/secret.js');
-var tokenManager = require('./config/token_manager.js');
+var express = require('express'),
+  morgan = require('morgan'),
+  cookieParser = require('cookie-parser'),
+  bodyParser = require('body-parser'),
+  jwt = require('express-jwt'),
+  multiparty = require('connect-multiparty'),
+  secret = require('./config/secret.js'),
+  tokenManager = require('./config/token_manager.js');
 var internals = {};
 internals.user = require('./handlers/user.js');
 internals.diverse = require('./handlers/diverse.js');
 internals.recipe = require('./handlers/recipe.js');
 
+// Application environment
 var app = express();
 var port = process.env.PORT || 3000;
+
+// Requires multiparty
+var multipartyMiddleware = multiparty();
 
 // Set up
 app.use(function(req, res, next) {
@@ -36,7 +41,7 @@ router.post('/user/signup', internals.user.signup);
 router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
 router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
 router.delete('/recipe/delete/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.delete);
-router.post('/recipe/picture/upload', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.uploadPicture);
+router.post('/recipe/picture/upload', jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipe.uploadPicture);
 
 app.use('/',router);
 // Create a server with a host and port
