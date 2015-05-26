@@ -133,11 +133,10 @@ internals.uploadPicture = function(req,res){
     file.path,
     function(result) { res.send(result); },
     {
-      public_id: 'sample_id',
       crop: 'limit',
       width: 500,
       height: 500,
-      tags: ['special', 'for_homepage']
+      tags: ['recipe,steps']
     }
   )
 };
