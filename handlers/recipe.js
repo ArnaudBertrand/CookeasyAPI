@@ -123,8 +123,11 @@ internals.delete = function(req,res){
   });
 };
 
-internals.test = function(req,res){
-  res.send({success: true});
+internals.uploadPicture = function(req,res){
+  console.log(req);
+  //var imageStream = fs.createReadStream(req.files.image.path, { encoding: 'binary' })
+  //  , cloudStream = cloudinary.uploader.upload_stream(function() { res.redirect('/recipes/'); });
+  //imageStream.on('data', cloudStream.write).on('end', cloudStream.end);re
 };
 
 module.exports = internals;
