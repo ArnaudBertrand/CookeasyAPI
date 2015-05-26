@@ -129,9 +129,22 @@ internals.delete = function(req,res){
 
 internals.uploadPicture = function(req,res){
   var file = req.files.file;
-  cloudinary.uploader.upload_stream(function(result) {
-    res.send(res); 
-  });
+  cloudinary.uploader.upload(
+    file.path,
+    function(result) { res.send(result); },
+    {
+      public_id: 'sample_id',
+      crop: 'limit',
+      width: 2000,
+      height: 2000,
+      eager: [
+        { width: 200, height: 200, crop: 'thumb', gravity: 'face',
+          radius: 20, effect: 'sepia' },
+        { width: 100, height: 150, crop: 'fit', format: 'png' }
+      ],
+      tags: ['special', 'for_homepage']
+    }
+  )
 };
 
 module.exports = internals;
