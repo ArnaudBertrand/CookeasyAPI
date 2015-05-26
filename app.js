@@ -4,6 +4,7 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   jwt = require('express-jwt'),
   multiparty = require('connect-multiparty'),
+  cloudinary = require('cloudinary'),
   secret = require('./config/secret.js'),
   tokenManager = require('./config/token_manager.js');
 var internals = {};
@@ -46,3 +47,12 @@ router.post('/recipe/picture/upload', jwt({secret: secret.secretToken}), tokenMa
 app.use('/',router);
 // Create a server with a host and port
 var server = app.listen(port);
+
+// Cloudinary config - Image storing
+app.configure('development', function(){
+  app.use(express.errorHandler());
+  cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
+});
+
+app.locals.api_key = cloudinary.config().api_key;
+app.locals.cloud_name = cloudinary.config().cloud_name;

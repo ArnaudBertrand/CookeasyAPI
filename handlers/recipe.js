@@ -1,7 +1,8 @@
-var db = require('./../mongoose/mongoose.js');
-var Recipe = db.Recipe;
-var Ingredient = db.Ingredient;
-var internals = {};
+var db = require('./../mongoose/mongoose.js'),
+  cloudinary = require('cloudinary'),
+  Recipe = db.Recipe,
+  Ingredient = db.Ingredient,
+  internals = {};
 
 internals.addComment = function(req, res){
   var message = req.body.comment || '';
@@ -125,11 +126,13 @@ internals.delete = function(req,res){
 
 internals.uploadPicture = function(req,res){
   var file = req.files.file;
-  console.log(file.name);
-  console.log(file.type);
-  //var imageStream = fs.createReadStream(req.files.image.path, { encoding: 'binary' })
-  //  , cloudStream = cloudinary.uploader.upload_stream(function() { res.redirect('/recipes/'); });
-  //imageStream.on('data', cloudStream.write).on('end', cloudStream.end);re
+  console.log(file);
+  res.send('Ok');
+  /**console.log(file.type);
+  var imageStream = fs.createReadStream(file, { encoding: 'binary' })
+    , cloudStream = cloudinary.uploader.upload_stream(function() { res.redirect('/recipes/'); });
+  imageStream.on('data', cloudStream.write).on('end', cloudStream.end);
+  **/
 };
 
 module.exports = internals;
