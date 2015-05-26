@@ -135,13 +135,8 @@ internals.uploadPicture = function(req,res){
     {
       public_id: 'sample_id',
       crop: 'limit',
-      width: 2000,
-      height: 2000,
-      eager: [
-        { width: 200, height: 200, crop: 'thumb', gravity: 'face',
-          radius: 20, effect: 'sepia' },
-        { width: 100, height: 150, crop: 'fit', format: 'png' }
-      ],
+      width: 500,
+      height: 500,
       tags: ['special', 'for_homepage']
     }
   )
