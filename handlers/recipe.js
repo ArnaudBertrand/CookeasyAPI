@@ -131,7 +131,7 @@ internals.uploadPicture = function(req,res){
   var file = req.files.file;
   cloudinary.uploader.upload(
     file.path,
-    function(result) { res.send(result); },
+    function(result) { res.send(result.url); },
     {
       crop: 'limit',
       width: 500,
