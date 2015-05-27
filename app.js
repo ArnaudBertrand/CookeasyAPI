@@ -34,6 +34,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var router = express.Router();
 router.get('/', internals.diverse.home);
 router.get('/recipe/get/:id', internals.recipe.get);
+router.post('/recipe/search', internals.recipe.search);
 router.post('/user/login', internals.user.login);
 router.post('/user/signup', internals.user.signup);
 
