@@ -134,7 +134,7 @@ internals.search = function(req,res){
     regex = '';
 
   items.forEach(function(e){
-    regex += '(?=.*' + e '.*)';
+    regex += '(?=.*' + e + '.*)';
   });
 
   Recipe.find({name: {$regex: regex, $options: "i"}}, function(err, recipes){
