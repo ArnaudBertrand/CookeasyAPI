@@ -106,6 +106,16 @@ internals.create = function (req, res) {
   });
 };
 
+internals.delete = function(req,res){
+  var user = req.user;
+  Recipe.findOneAndRemove({_id: req.params.id, author: req.user.username}, function(err){
+    if(err){
+      res.send({error: err});
+    }
+    res.send({success: true});
+  });
+};
+
 internals.get = function(req,res){
   Recipe.findOne({_id: req.params.id},function(err, recipe){
     if(recipe){
@@ -117,15 +127,23 @@ internals.get = function(req,res){
   });
 };
 
-internals.delete = function(req,res){
-  var user = req.user;
-  Recipe.findOneAndRemove({_id: req.params.id, author: req.user.username}, function(err){
-    if(err){
-      res.send({error: err});
-    }
-    res.send({success: true});
+internals.search = function(req,res){
+  var name = req.body.name;
+
+  var items = name.split(' '),
+    regex = '';
+
+  items.forEach(function(e){
+    regex += '(?=.*' + e '.*)';
   });
-};
+
+  Recipe.find({name: {$regex: regex, $options: "i"}}, function(err, recipes){
+    if(err){
+      return res.send({error: err});
+    }
+    res.send({success: true, recipe: recipes});
+  }).limit(20);
+}
 
 internals.uploadPicture = function(req,res){
   var file = req.files.file;
