@@ -20,7 +20,7 @@ internals.addComment = function(req, res){
   }
   if(comment.mark < 0 || comment.mark > 5){
     return res.send({error: "Mark should be between 0 and 5"});
-  } else if(comment.mark = 0){
+  } else if(comment.mark == 0){
     delete comment.mark;
   }
 
@@ -127,7 +127,6 @@ internals.delete = function(req,res){
 internals.get = function(req,res){
   Recipe.findOne({_id: req.params.id},function(err, recipe){
     if(recipe){
-      console.log(recipe);
       res.send({success: true, recipe: recipe});
     } else {
       res.send({error: "Recipe does not exist"});
