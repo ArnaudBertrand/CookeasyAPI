@@ -8,21 +8,29 @@ var db = require('./../mongoose/mongoose.js'),
 cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
 
 internals.addComment = function(req, res){
-  var message = req.body.comment || '';
+  var comment = {}
+  comment.message = req.body.message || '';
+  comment.mark = req.body.mark || 0;
   // Check parameter
-  if(typeof message !== "string"){
+  if(typeof comment.message !== "string" || typeof comment.mark !== "number"){
     return res.send({error: "Wrongs parameters types"});
   }
-  if(message.length < 10 || message.length > 255){
+  if(comment.message.length < 10 || comment.message.length > 255){
     return res.send({error: "Message should be between 10 and 255 characters"});
+  }
+  if(comment.mark < 0 || comment.mark > 5){
+    return res.send({error: "Mark should be between 0 and 5"});
+  } else if(comment.mark = 0){
+    delete comment.mark;
   }
 
   // Set user
-  var user = {};
-  user.name = req.user.username;
+  comment.author = req.user.username;
+  // Add date
+  comment.date = Date.now();
 
   // Add comment
-  Recipe.findByIdAndUpdate(req.params.id,{$push: {"comments": {author: user, message: message, date: Date.now()}}}, {safe: true, upsert: true},function(err, model){
+  Recipe.findByIdAndUpdate(req.params.id,{$push: {"comments": comment}}, {safe: true, upsert: true},function(err, model){
     if(err){
       return res.send({error: err});
     }
