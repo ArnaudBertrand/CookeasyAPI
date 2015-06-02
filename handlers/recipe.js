@@ -154,24 +154,13 @@ internals.search = function(req,res){
 
 internals.uploadPictures = function(req,res){
   var file = req.files.file;
-  cloudinary.uploader.upload(
-    file.path,
-    function(result) { res.send(result.url); },
-    {
-      crop: 'limit',
-      width: 500,
-      height: 500,
-      tags: ['recipe,steps']
-    }
-  )
-};
-
-internals.uploadStepPicture = function(req,res){
-  var file = req.files.file;
   var id = req.body.recipeId;
+
+  // Upload
   cloudinary.uploader.upload(
     file.path,
     function(result) {
+      // Set picture and thumbnail
       var picture = {};
       picture.url = result.url;
       picture.thumbnailUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
@@ -190,6 +179,20 @@ internals.uploadStepPicture = function(req,res){
       tags: ['recipe,steps']
     }
   )
+};
+
+internals.uploadStepPicture = function(req,res){
+  var file = req.files.file;
+  cloudinary.uploader.upload(
+    file.path,
+    function(result) { res.send(result.url); },
+    {
+      crop: 'limit',
+      width: 800,
+      height: 800,
+      tags: ['recipe,steps']
+    }
+  );
 };
 
 module.exports = internals;
