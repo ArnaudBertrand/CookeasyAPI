@@ -7,11 +7,11 @@ var RecipeSchema = new Schema({
   course: { type: Number, required: true },
   difficulty: Number,
   comments: [],
-  imageUrl: String
+  imageUrl: String,
   ingredients: [],
   pictures: [],
   steps: [],
-  utensils: [],
+  utensils: []
 });
 
 module.exports = Mongoose.model('Recipe', RecipeSchema);
