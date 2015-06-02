@@ -3,15 +3,15 @@ var Mongoose = require('mongoose'),
 
 var RecipeSchema = new Schema({
   name: { type: String, required: true },
-  course: { type: Number, required: true },
-  type: { type: Number, required: true },
-  ingredients: [],
-  steps: [],
   author: String,
-  comments: [],
-  utensils: [],
+  course: { type: Number, required: true },
   difficulty: Number,
+  comments: [],
   imageUrl: String
+  ingredients: [],
+  pictures: [],
+  steps: [],
+  utensils: [],
 });
 
 module.exports = Mongoose.model('Recipe', RecipeSchema);
