@@ -172,17 +172,21 @@ internals.uploadStepPicture = function(req,res){
   cloudinary.uploader.upload(
     file.path,
     function(result) {
-      Recipe.findByIdAndUpdate(id,{$push: {"pictures": result.url}}, {safe: true, upsert: true},function(err, model){
+      var picture = {};
+      picture.url = result.url;
+      picture.thumbnailUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
+      Recipe.findByIdAndUpdate(id,{$push: {"pictures": picture}}, {safe: true, upsert: true},function(err, model){
         if(err){
           return res.send({error: err});
         }
+
         res.send(result.url);
       });
     },
     {
       crop: 'limit',
-      width: 500,
-      height: 500,
+      width: 800,
+      height: 800,
       tags: ['recipe,steps']
     }
   )
