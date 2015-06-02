@@ -155,6 +155,7 @@ internals.search = function(req,res){
 internals.uploadPictures = function(req,res){
   var file = req.files.file;
   var id = req.body.recipeId;
+  console.log("ID: " + id);
 
   // Upload
   cloudinary.uploader.upload(
@@ -164,11 +165,11 @@ internals.uploadPictures = function(req,res){
       var picture = {};
       picture.url = result.url;
       picture.thumbnailUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
+      console.log(picture);
       Recipe.findByIdAndUpdate(id,{$push: {"pictures": picture}}, {safe: true, upsert: true},function(err, model){
         if(err){
           return res.send({error: err});
         }
-
         res.send(result.url);
       });
     },
