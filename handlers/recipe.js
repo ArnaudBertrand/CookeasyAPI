@@ -155,6 +155,7 @@ internals.search = function(req,res){
 internals.uploadPictures = function(req,res){
   var file = req.files.file;
   var id = req.body.recipeId;
+  console.log(req.body);
   console.log("ID: " + id);
 
   // Upload
