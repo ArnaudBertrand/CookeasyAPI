@@ -168,9 +168,17 @@ internals.uploadPictures = function(req,res){
 
 internals.uploadStepPicture = function(req,res){
   var file = req.files.file;
+  var id = req.body.recipeId;
   cloudinary.uploader.upload(
     file.path,
-    function(result) { res.send(result.url); },
+    function(result) {
+      Recipe.findByIdAndUpdate(id,{$push: {"pictures": result.url}}, {safe: true, upsert: true},function(err, model){
+        if(err){
+          return res.send({error: err});
+        }
+        res.send(result.url);
+      });
+    },
     {
       crop: 'limit',
       width: 500,
