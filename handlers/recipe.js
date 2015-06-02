@@ -163,8 +163,8 @@ internals.uploadPictures = function(req,res){
       // Set picture and thumbnail
       var picture = {};
       picture.url = result.url;
-      picture.thumbnailUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
-      
+      picture.thumbUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
+
       Recipe.findByIdAndUpdate(id,{$push: {"pictures": picture}}, {safe: true, upsert: true},function(err, model){
         if(err){
           return res.send({error: err});
