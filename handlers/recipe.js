@@ -154,10 +154,7 @@ internals.search = function(req,res){
 
 internals.uploadPictures = function(req,res){
   var file = req.files.file;
-  var id = req.body.data.recipeId;
-  console.log(req.body.data);
-  console.log("ID: " + req.body.data.recipeId);
-  console.log("ID: " + req.body.recipeId);
+  var id = req.body.recipeId;
 
   // Upload
   cloudinary.uploader.upload(
