@@ -152,7 +152,21 @@ internals.search = function(req,res){
   }).limit(20);
 }
 
-internals.uploadPicture = function(req,res){
+internals.uploadPictures = function(req,res){
+  var file = req.files.file;
+  cloudinary.uploader.upload(
+    file.path,
+    function(result) { res.send(result.url); },
+    {
+      crop: 'limit',
+      width: 500,
+      height: 500,
+      tags: ['recipe,steps']
+    }
+  )
+};
+
+internals.uploadStepPicture = function(req,res){
   var file = req.files.file;
   cloudinary.uploader.upload(
     file.path,
