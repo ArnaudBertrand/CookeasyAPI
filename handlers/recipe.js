@@ -34,7 +34,7 @@ internals.addComment = function(req, res){
     if(err){
       return res.send({error: err});
     }
-    res.send(model.comment);
+    res.send({comment: comment});
   });
 }
 
