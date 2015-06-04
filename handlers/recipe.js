@@ -34,7 +34,7 @@ internals.addComment = function(req, res){
     if(err){
       return res.send({error: err});
     }
-    res.send(model.comments);
+    res.send(model.comment);
   });
 }
 
@@ -42,16 +42,19 @@ internals.addComment = function(req, res){
 internals.create = function (req, res) {
   var name = req.body.name || '';
   var course = req.body.course || -1;
-  var type = req.body.type || -1;
+  var difficulty = req.body.difficulty || 0;
+  var nbPerson = req.body.nbPerson || -1;
   var ingredients = req.body.ingredients || [];
   var steps = req.body.steps || [];
   var user = req.user;
+  var utensils = req.body.utensils || [];
+  var picture = req.body.picture || {}
 
   // Check parameters
-  if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof type !== "number") || (type !== parseInt(type,10)) || !(ingredients instanceof Array) || !(steps instanceof Array)){
+  if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof nbPerson !== "number") || (nbPerson !== parseInt(type,10)) || !(ingredients instanceof Array) || !(steps instanceof Array)){
     return res.send({error: "Wrongs parameters types"});
   }
-  if(!user || name == '' || course == -1 || type == -1 || ingredients.length == 0 || steps.length == 0){
+  if(!user || name == '' || course == -1 || nbPerson == -1 || ingredients.length == 0 || steps.length == 0){
     return res.send({error: "Missing parameters"});
   }
 
@@ -135,9 +138,9 @@ internals.get = function(req,res){
 };
 
 internals.search = function(req,res){
-  var name = req.body.name;
+  var search = req.body.search;
 
-  var items = name.split(' '),
+  var items = search.split(' '),
     regex = '';
 
   items.forEach(function(e){
