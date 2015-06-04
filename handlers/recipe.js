@@ -151,7 +151,7 @@ internals.search = function(req,res){
     if(err){
       return res.send({error: err});
     }
-    res.send(recipes);
+    res.send({recipes: recipes});
   }).limit(20);
 }
 
