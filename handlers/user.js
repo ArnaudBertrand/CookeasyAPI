@@ -12,7 +12,8 @@ internals.login = function(req, res){
   }
   console.log("id '" + id + "''");
   console.log("match '" + id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i) + "''");
-  var isEmail = id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i);
+  console.log(id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i));
+  var isEmail = (id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i));
   // Password
   var password = req.body.password || '';
   if(typeof password !== "string" || password.length < 6){
