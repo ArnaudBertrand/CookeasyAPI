@@ -67,8 +67,8 @@ internals.signup = function(req, res){
   // Find if username and email already exist
   console.log("Username " + user.username);
   console.log("Email " + user.email);
-  console.log("Find username " + User.where({username: user.username}).count());
-  console.log("Find email " + User.where({email: user.email}).count());
+  console.log(User.where({username: user.username}).count());
+  console.log(User.where({email: user.email}).count());
   if(User.where({username: user.username}).count()){
     return res.send({error: "Username already in use"});
   }
