@@ -65,27 +65,28 @@ internals.signup = function(req, res){
   }
 
   // Find if username and email already exist
-  console.log("Username " + user.username);
-  console.log("Email " + user.email);
-  console.log(User.where({username: user.username}).count());
-  console.log(User.where({email: user.email}).count());
-  if(User.where({username: user.username}).count()){
-    return res.send({error: "Username already in use"});
-  }
-  if(User.where({email: user.email}).count()){
-    return res.send({error: "E-mail already in use"});
-  }
-
-  // Create user
-  var newUser = new User(user);
-  newUser.save(function(err){
-    if(err){
-      res.send({error: err});
-    } else{
-      var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
-      res.send({success: true, token: token});
+  User.where({username: user.username}).count(function(err, count){
+    if(count){
+      return res.send({error: "Username already in use"});
     }
-  });
+    User.where({email: user.email}).count(function(err, count){
+      if(count){
+        return res.send({error: "E-mail already in use"});
+      }
+
+      // Create user
+      var newUser = new User(user);
+      newUser.save(function(err){
+        if(err){
+          res.send({error: err});
+        } else{
+          var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
+          res.send({success: true, token: token});
+        }
+      });
+    });
+  })
+
 };
 
 module.exports = internals;
