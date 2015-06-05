@@ -7,11 +7,13 @@ var internals = {};
 internals.login = function(req, res){
   // ID
   var id = req.body.id || '';
+  console.log(id);
   if(typeof id !== "string"){
     return res.send({error: 'Uncorrect identifier'},400);
   }
   var isEmail = id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i);
   // Password
+  console.log(password);
   var password = req.body.password || '';
   if(typeof password !== "string" || password.length < 6){
     return res.send({error: 'Password too short'},400);
@@ -19,6 +21,8 @@ internals.login = function(req, res){
 
   // Find user
   var query = isEmail ? {email: id} : {username: id};
+
+  console.log(query);
   User.findOne(query, function(err,user){
     // Check for errors
     if(err){
