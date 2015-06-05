@@ -6,11 +6,11 @@ var internals = {};
 
 internals.login = function(req, res){
   // ID
-  var id = req.body.email || '';
+  var id = req.body.id || '';
   if(typeof id !== "string"){
     return res.send({error: 'Uncorrect identifier'},400);
   }
-  var isEmail = email === email.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i);
+  var isEmail = id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i);
   // Password
   var password = req.body.password || '';
   if(typeof password !== "string" || password.length < 6){
