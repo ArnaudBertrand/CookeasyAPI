@@ -13,8 +13,8 @@ internals.login = function(req, res){
   }
   var isEmail = id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i);
   // Password
-  console.log('PWD' + password);
   var password = req.body.password || '';
+  console.log('PWD ' + password);
   if(typeof password !== "string" || password.length < 6){
     return res.send({error: 'Password too short'},400);
   }
@@ -22,7 +22,7 @@ internals.login = function(req, res){
   // Find user
   var query = isEmail ? {email: id} : {username: id};
 
-  console.log(query);
+  console.log('QUERY ' + query);
   User.findOne(query, function(err,user){
     // Check for errors
     if(err){
