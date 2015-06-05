@@ -52,7 +52,7 @@ internals.create = function (req, res) {
   // Difficulty of the recipe
   recipe.difficulty = req.body.difficulty || 0;
   if([1,2,3,4,5].indexOf(difficulty) > -1){
-    errors.push({"Difficulty should be number between 1 and 5");
+    errors.push("Difficulty should be number between 1 and 5");
   }
 
   // Ingredients
@@ -136,7 +136,7 @@ internals.create = function (req, res) {
   // Recipe picture
   recipe.picture = req.body.picture || {};
   if(typeof picture.url !== "string" || typeof picture.thumbUrl !== "string"){
-    error.push('Picture format: {thumbUrl: __, url: __}');
+    errors.push('Picture format: {thumbUrl: __, url: __}');
   }
 
   // Author of the recipe
@@ -147,7 +147,7 @@ internals.create = function (req, res) {
   if(utensil instanceof Array){
     utensils.forEach(function(utensil){
       if(typeof utensil !== "string"){
-        error.push('Uncorrect utensil');
+        errors.push('Uncorrect utensil');
       }
     });
   } else {
