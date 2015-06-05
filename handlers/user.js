@@ -22,6 +22,7 @@ internals.login = function(req, res){
   // Find user
   var query = isEmail ? {email: id} : {username: id};
 
+  console.log('isEmail ' + isEmail + ' Id : ' + id);
   console.log('QUERY ' + query);
   User.findOne(query, function(err,user){
     // Check for errors
