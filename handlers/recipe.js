@@ -40,78 +40,130 @@ internals.addComment = function(req, res){
 
 // Routes handlers
 internals.create = function (req, res) {
-  var name = req.body.name || '';
-  var course = req.body.course || -1;
-  var difficulty = req.body.difficulty || 0;
-  var nbPerson = req.body.nbPerson || -1;
-  var ingredients = req.body.ingredients || [];
-  var steps = req.body.steps || [];
-  var user = req.user;
-  var utensils = req.body.utensils || [];
-  var picture = req.body.picture || {}
+  var errors = [];
+  var recipe = {};
 
-  // Check parameters
-  if((typeof name !== "string") || (typeof course !== "number") || (course !== parseInt(course,10)) || (typeof nbPerson !== "number") || (nbPerson !== parseInt(type,10)) || !(ingredients instanceof Array) || !(steps instanceof Array)){
-    return res.send({error: "Wrongs parameters types"});
-  }
-  if(!user || name == '' || course == -1 || nbPerson == -1 || ingredients.length == 0 || steps.length == 0){
-    return res.send({error: "Missing parameters"});
+  //  Course type
+  recipe.course = req.body.course || 0;
+  if([1,2,3].indexOf(course) > -1){
+    errors.push("Course should be: 1=Starter, 2=Main, 3=Dessert");
   }
 
-  // Check ingredients
-  var stop = false;
-  ingredients.forEach(function(ingredient){
-    var name = ingredient.name || '';
-    var qte = ingredient.qte || 0;
-    var unit = ingredient.unit || '';
+  // Difficulty of the recipe
+  recipe.difficulty = req.body.difficulty || 0;
+  if([1,2,3,4,5].indexOf(difficulty) > -1){
+    errors.push({"Difficulty should be number between 1 and 5");
+  }
 
-    if(typeof name != "string" || typeof qte !== "number" || typeof unit !== "string"){
-      stop = true;
-      return res.send({error: "Invalid type parameters for ingredient"});
-    }
-
-    if(name == ''){
-      stop = true;
-      return res.send({error: "Invalid ingredient name"});
-    }
-    name = name.toLowerCase();
-    if(!Ingredient.where({name: name}).count()){
-      var ing = new Ingredient({name: name});
-      ing.save(function(err){
-        if(err){
-          return res.send({error: err});
+  // Ingredients
+  recipe.ingredients = req.body.ingredients || '';
+  if(!(ingredients instanceof Array) || ingredients.length === 0){
+    errors.push('Please insert ingredients in your recipe');
+  } else {
+    ingredients.forEach(function(ingredient){
+      // Name
+      var name = ingredient.name;
+      if(typeof name !== "string" || name.length < 2){
+        return errors.push("Invalid ingredient name");
+      } else {
+        // Add the ingredient to the ingredient list if it doesn't exist
+        name = name.toLowerCase();
+        if(!Ingredient.where({name: name}).count()){
+          var ing = new Ingredient({name: name});
+          ing.save(function(err){
+            if(err){
+              return res.send({error: err});
+            }
+          });
         }
-      });
-    }
-  });
-
-  // Check steps
-  var stepCount = 0;
-  steps.forEach(function(step){
-    stepCount++;
-    var action = step.action || '';
-    var stepnb = step.number || 0;
-    var time = step.time || 0;
-    var picture = step.picture || '';
-
-    // Check parameters
-    if((typeof action !== "string")  || (typeof stepnb !== "number") || (typeof time !== "number") || (typeof picture !== "string")){
-      stop = true;
-      return res.send({error: "Invalid type parameters in step"});
-    }
-    if(action == '' || stepnb !== stepCount){
-      stop = true;
-      return res.send({error: "Invalid parameters in step"});
-    }
-  });
-
-  // Do not save if an error occured during loops
-  if(stop){
-    return;
+      }
+      // Quantity
+      var qte = ingredient.qte;
+      if(typeof qte !== 'number' || qte < 0){
+        return errors.push("Invalid ingredient quantity");
+      }
+      // Unit
+      var unit = ingredient.unit;
+      if(typeof unit !== "string" || unit == ''){
+        return errors.push("Invalid ingredient name");
+      }
+    });
   }
+
+  // Name of the recipe
+  recipe.name = req.body.name;
+  if(typeof name !== "string" || name.length < 5){
+    errors.push("Name is a string with at least 5 chars");
+  }
+
+  // Number of person
+  recipe.nbPerson = req.body.nbPerson;
+  if(!(typeof nbPerson==='number' && (nbPerson%1)===0) || nbPerson < 0){
+    errors.push("Number of person should be a positive number");
+  }
+
+  // Steps
+  recipe.steps = req.body.steps || '';
+  if(!(steps instanceof Array) || steps.length === 0){
+    errors.push('No steps in your recipe');
+  } else {
+    var stepCount = 0;
+    steps.forEach(function(step){
+      stepCount++;
+      // Action
+      var action = step.action || '';
+      if(typeof action !== "string" || action.length < 10){
+        errors.push('Actions steps should be at least 10 characters long');
+      }
+      // Step number
+      var stepnb = step.number || 0;
+      if(stepnb !== stepCount){
+        error.push('Steps not in correct order');
+      }
+      // Time
+      var time = step.time;
+      if(typeof time !== undefined && (typeof time !== "number" || time < 0)){
+        error.push('Step time should be a number');
+      }
+      // Picture
+      var picture = step.picture || {};
+      if(typeof picture.url !== "string" || typeof picture.thumbUrl !== "string"){
+        error.push('Picture format: {thumbUrl: __, url: __}');
+      }
+    });
+  }
+
+  // Recipe picture
+  recipe.picture = req.body.picture || {};
+  if(typeof picture.url !== "string" || typeof picture.thumbUrl !== "string"){
+    error.push('Picture format: {thumbUrl: __, url: __}');
+  }
+
+  // Author of the recipe
+  var user = req.user;
+
+  // Utensils
+  var utensils = req.body.utensils || [];
+  if(utensil instanceof Array){
+    utensils.forEach(function(utensil){
+      if(typeof utensil !== "string"){
+        error.push('Uncorrect utensil');
+      }
+    });
+  } else {
+    error.push('Utensils should be array');
+  }
+
+  // Check for errors
+  if(errors.length){
+    return res.send(errors,400);
+  }
+
+  // Add creation date
+  recipe.createdOn = Date.now();
 
   // Create the recipe
-  var recipe = new Recipe({name: name, course: course, type: type, ingredients: ingredients, steps: steps, author: req.user.username});
+  var recipe = new Recipe(recipe);
   recipe.save(function(err){
     res.send({id: recipe._id});
   });
@@ -119,7 +171,8 @@ internals.create = function (req, res) {
 
 internals.delete = function(req,res){
   var user = req.user;
-  Recipe.findOneAndRemove({_id: req.params.id, author: req.user.username}, function(err){
+  var id =  req.params.id || '';
+  Recipe.findOneAndRemove({_id: id, author: req.user.username}, function(err){
     if(err){
       res.send({error: err});
     }
@@ -128,9 +181,10 @@ internals.delete = function(req,res){
 };
 
 internals.get = function(req,res){
-  Recipe.findOne({_id: req.params.id},function(err, recipe){
+  var id =  req.params.id || '';
+  Recipe.findOne({_id: id},function(err, recipe){
     if(recipe){
-      res.send({success: true, recipe: recipe});
+      res.send({recipe: recipe});
     } else {
       res.send({error: "Recipe does not exist"});
     }
@@ -138,8 +192,11 @@ internals.get = function(req,res){
 };
 
 internals.search = function(req,res){
-  var search = req.body.search;
+  var search = req.body.search || '';
 
+  if(typeof search !== "string" ||search == ''){
+    return res.send("Search terms not valid", 400);
+  }
   var items = search.split(' '),
     regex = '';
 
