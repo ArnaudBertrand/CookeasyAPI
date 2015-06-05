@@ -10,9 +10,6 @@ internals.login = function(req, res){
   if(typeof id !== "string"){
     return res.send({error: 'Uncorrect identifier'},400);
   }
-  console.log("id '" + id + "''");
-  console.log("match '" + id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i) + "''");
-  console.log(id == id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i));
   var isEmail = (id == id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i));
   // Password
   var password = req.body.password || '';
@@ -23,8 +20,6 @@ internals.login = function(req, res){
   // Find user
   var query = isEmail ? {email: id} : {username: id};
 
-  console.log('isEmail ' + isEmail + ' Id : ' + id);
-  console.log('QUERY ' + query);
   User.findOne(query, function(err,user){
     // Check for errors
     if(err){
@@ -70,10 +65,10 @@ internals.signup = function(req, res){
   }
 
   // Find if username and email already exist
-  if(Ingredient.where({username: user.username}).count()){
+  if(User.where({username: user.username}).count()){
     return res.send({error: "Username already in use"});
   }
-  if(Ingredient.where({email: user.email}).count()){
+  if(User.where({email: user.email}).count()){
     return res.send({error: "E-mail already in use"});
   }
 
