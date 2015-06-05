@@ -7,14 +7,14 @@ var internals = {};
 internals.login = function(req, res){
   // ID
   var id = req.body.id || '';
-  console.log('ID ' + id);
   if(typeof id !== "string"){
     return res.send({error: 'Uncorrect identifier'},400);
   }
+  console.log("id '" + id + "''");
+  console.log("match '" + id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i) + "''");
   var isEmail = id === id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i);
   // Password
   var password = req.body.password || '';
-  console.log('PWD ' + password);
   if(typeof password !== "string" || password.length < 6){
     return res.send({error: 'Password too short'},400);
   }
