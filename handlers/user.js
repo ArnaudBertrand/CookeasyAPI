@@ -10,7 +10,7 @@ internals.login = function(req, res){
   if(typeof id !== "string"){
     return res.send({error: 'Uncorrect identifier'},400);
   }
-  var isEmail = (id == id.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i));
+  var isEmail = (id == id.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[a-z]{2,4}/i));
   // Password
   var password = req.body.password || '';
   if(typeof password !== "string"){
@@ -50,7 +50,7 @@ internals.signup = function(req, res){
   var user = {};
   // E-mail
   user.email = req.body.email || '';
-  if(typeof user.email !== "string" || user.email != user.email.match(/[a-z0-9]*@[a-z0-9]*\.[a-z]*/i)){
+  if(typeof user.email !== "string" || user.email != user.email.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[a-z]{2,4}/i)){
     return res.send({error: 'E-mail uncorrect'},400);
   }
   // Password
