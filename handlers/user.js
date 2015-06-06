@@ -60,7 +60,7 @@ internals.signup = function(req, res){
   }
   // Username
   user.username = req.body.username || '';
-  if(typeof user.username !== "string" || user.username.length < 3){
+  if(typeof user.username !== "string" || user.username.length < 2){
     return res.send({error: 'Username too short'},400);
   }
 

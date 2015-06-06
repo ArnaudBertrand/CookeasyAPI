@@ -215,6 +215,7 @@ internals.search = function(req,res){
 internals.uploadPictures = function(req,res){
   var file = req.files.file;
   var id = req.params.id;
+  var author = req.user.username;
 
   // Upload
   cloudinary.uploader.upload(
@@ -224,6 +225,7 @@ internals.uploadPictures = function(req,res){
       var picture = {};
       picture.url = result.url;
       picture.thumbUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
+      picture.author = author;
 
       Recipe.findByIdAndUpdate(id,{$push: {"pictures": picture}}, {safe: true, upsert: true},function(err, model){
         if(err){
@@ -236,7 +238,7 @@ internals.uploadPictures = function(req,res){
       crop: 'limit',
       width: 800,
       height: 800,
-      tags: ['recipe,steps']
+      tags: ['recipe','steps',id]
     }
   )
 };
@@ -248,8 +250,8 @@ internals.uploadStepPicture = function(req,res){
     function(result) { res.send(result.url); },
     {
       crop: 'limit',
-      width: 800,
-      height: 800,
+      width: 500,
+      height: 500,
       tags: ['recipe,steps']
     }
   );
