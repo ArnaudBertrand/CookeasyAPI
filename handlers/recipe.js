@@ -245,33 +245,6 @@ internals.uploadPictures = function(req,res){
   )
 };
 
-internals.uploadPicture = function(req,res){
-  var file = req.files.file;
-  var id = req.params.id;
-  var author = req.user.username;
-  var tags = req.params.tags || [];
-
-  // Upload
-  cloudinary.uploader.upload(
-    file.path,
-    function(result) {
-      // Set picture and thumbnail
-      var picture = {};
-      picture.url = result.url;
-      picture.thumbUrl = cloudinary.url(result.public_id, { width: 300, height: 300, crop: "fill" });
-      picture.author = author;
-
-      res.send({picture: picture});
-    },
-    {
-      crop: 'limit',
-      width: 800,
-      height: 800,
-      tags: tags
-    }
-  )
-};
-
 internals.uploadStepPicture = function(req,res){
   var file = req.files.file;
   cloudinary.uploader.upload(
