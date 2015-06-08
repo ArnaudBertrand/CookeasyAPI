@@ -45,13 +45,13 @@ internals.create = function (req, res) {
 
   //  Course type
   recipe.course = req.body.course || 0;
-  if([1,2,3].indexOf(recipe.course) > -1){
+  if([1,2,3].indexOf(recipe.course) < 1){
     errors.push("Course should be: 1=Starter, 2=Main, 3=Dessert");
   }
 
   // Difficulty of the recipe
   recipe.difficulty = req.body.difficulty || 0;
-  if([1,2,3,4,5].indexOf(recipe.difficulty) > -1){
+  if([1,2,3,4,5].indexOf(recipe.difficulty) < 1){
     errors.push("Difficulty should be number between 1 and 5");
   }
 
