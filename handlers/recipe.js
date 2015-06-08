@@ -122,8 +122,8 @@ internals.create = function (req, res) {
       }
       // Time
       var time = step.time;
-      if(typeof time !== "undefined" && (typeof time !== "number" || time < 0)){
-        errors.push('Step time should be a number');
+      if(typeof time !== "undefined" && (typeof time !== "number"  && (time%1)===0 || time < 0)){
+        errors.push('Step time should be a position number');
       }
       // Picture
       var picture = step.picture;
