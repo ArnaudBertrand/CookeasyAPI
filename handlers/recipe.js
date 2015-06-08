@@ -45,22 +45,22 @@ internals.create = function (req, res) {
 
   //  Course type
   recipe.course = req.body.course || 0;
-  if([1,2,3].indexOf(course) > -1){
+  if([1,2,3].indexOf(recipe.course) > -1){
     errors.push("Course should be: 1=Starter, 2=Main, 3=Dessert");
   }
 
   // Difficulty of the recipe
   recipe.difficulty = req.body.difficulty || 0;
-  if([1,2,3,4,5].indexOf(difficulty) > -1){
+  if([1,2,3,4,5].indexOf(recipe.difficulty) > -1){
     errors.push("Difficulty should be number between 1 and 5");
   }
 
   // Ingredients
   recipe.ingredients = req.body.ingredients || '';
-  if(!(ingredients instanceof Array) || ingredients.length === 0){
+  if(!(recipe.ingredients instanceof Array) || recipe.ingredients.length === 0){
     errors.push('Please insert ingredients in your recipe');
   } else {
-    ingredients.forEach(function(ingredient){
+    recipe.ingredients.forEach(function(ingredient){
       // Name
       var name = ingredient.name;
       if(typeof name !== "string" || name.length < 2){
@@ -92,23 +92,23 @@ internals.create = function (req, res) {
 
   // Name of the recipe
   recipe.name = req.body.name;
-  if(typeof name !== "string" || name.length < 5){
+  if(typeof recipe.name !== "string" || recipe.name.length < 5){
     errors.push("Name is a string with at least 5 chars");
   }
 
   // Number of person
   recipe.nbPerson = req.body.nbPerson;
-  if(!(typeof nbPerson==='number' && (nbPerson%1)===0) || nbPerson < 0){
+  if(!(typeof recipe.nbPerson==='number' && (recipe.nbPerson%1)===0) || recipe.nbPerson < 0){
     errors.push("Number of person should be a positive number");
   }
 
   // Steps
   recipe.steps = req.body.steps || '';
-  if(!(steps instanceof Array) || steps.length === 0){
+  if(!(recipe.steps instanceof Array) || recipe.steps.length === 0){
     errors.push('No steps in your recipe');
   } else {
     var stepCount = 0;
-    steps.forEach(function(step){
+    recipe.steps.forEach(function(step){
       stepCount++;
       // Action
       var action = step.action || '';
@@ -135,7 +135,7 @@ internals.create = function (req, res) {
 
   // Recipe picture
   recipe.picture = req.body.picture || {};
-  if(typeof picture.url !== "string" || typeof picture.thumbUrl !== "string"){
+  if(typeof recipe.picture.url !== "string" || typeof recipe.picture.thumbUrl !== "string"){
     errors.push('Picture format: {thumbUrl: __, url: __}');
   }
 
@@ -143,9 +143,9 @@ internals.create = function (req, res) {
   var user = req.user;
 
   // Utensils
-  var utensils = req.body.utensils || [];
-  if(utensil instanceof Array){
-    utensils.forEach(function(utensil){
+  recipe.utensils = req.body.utensils || [];
+  if(recipe.utensil instanceof Array){
+    recipe.utensils.forEach(function(utensil){
       if(typeof utensil !== "string"){
         errors.push('Uncorrect utensil');
       }
