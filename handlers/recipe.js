@@ -127,7 +127,7 @@ internals.create = function (req, res) {
       }
       // Picture
       var picture = step.picture || {};
-      if(typeofpicture !== "undefined" && (typeof picture.url !== "string" || typeof picture.thumbUrl !== "string")){
+      if(typeof picture !== "undefined" && (typeof picture.url !== "string" || typeof picture.thumbUrl !== "string")){
         errors.push('Picture format: {thumbUrl: __, url: __}');
       }
     });
