@@ -126,7 +126,7 @@ internals.create = function (req, res) {
         errors.push('Step time should be a number');
       }
       // Picture
-      var picture = step.picture || {};
+      var picture = step.picture;
       if(typeof picture !== "undefined" && (typeof picture.url !== "string" || typeof picture.thumbUrl !== "string")){
         errors.push('Picture format: {thumbUrl: __, url: __}');
       }
