@@ -98,7 +98,7 @@ internals.create = function (req, res) {
 
   // Number of person
   recipe.nbPerson = req.body.nbPerson;
-  if(!(typeof recipe.nbPerson==='number' && (recipe.nbPerson%1)===0) || recipe.nbPerson < 0){
+  if(!(typeof recipe.nbPerson==='number' && (recipe.nbPerson%1)===0) || recipe.nbPerson <= 0){
     errors.push("Number of person should be a positive number");
   }
 
@@ -118,17 +118,17 @@ internals.create = function (req, res) {
       // Step number
       var stepnb = step.number || 0;
       if(stepnb !== stepCount){
-        error.push('Steps not in correct order');
+        errors.push('Steps not in correct order');
       }
       // Time
       var time = step.time;
       if(typeof time !== undefined && (typeof time !== "number" || time < 0)){
-        error.push('Step time should be a number');
+        errors.push('Step time should be a number');
       }
       // Picture
       var picture = step.picture || {};
       if(typeof picture.url !== "string" || typeof picture.thumbUrl !== "string"){
-        error.push('Picture format: {thumbUrl: __, url: __}');
+        errors.push('Picture format: {thumbUrl: __, url: __}');
       }
     });
   }
@@ -144,7 +144,7 @@ internals.create = function (req, res) {
 
   // Utensils
   recipe.utensils = req.body.utensils || [];
-  if(recipe.utensil instanceof Array){
+  if(recipe.utensils instanceof Array){
     recipe.utensils.forEach(function(utensil){
       if(typeof utensil !== "string"){
         errors.push('Uncorrect utensil');
