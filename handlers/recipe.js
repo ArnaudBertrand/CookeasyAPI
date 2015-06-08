@@ -151,7 +151,7 @@ internals.create = function (req, res) {
       }
     });
   } else {
-    error.push('Utensils should be array');
+    errors.push('Utensils should be array');
   }
 
   // Check for errors
