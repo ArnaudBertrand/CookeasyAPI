@@ -45,13 +45,13 @@ internals.create = function (req, res) {
 
   //  Course type
   recipe.course = req.body.course || 0;
-  if([1,2,3].indexOf(recipe.course) < 1){
+  if([1,2,3].indexOf(recipe.course) < 0){
     errors.push("Course should be: 1=Starter, 2=Main, 3=Dessert");
   }
 
   // Difficulty of the recipe
   recipe.difficulty = req.body.difficulty || 0;
-  if([1,2,3,4,5].indexOf(recipe.difficulty) < 1){
+  if([1,2,3,4,5].indexOf(recipe.difficulty) < 0){
     errors.push("Difficulty should be number between 1 and 5");
   }
 
@@ -85,7 +85,7 @@ internals.create = function (req, res) {
       // Unit
       var unit = ingredient.unit;
       if(typeof unit !== "string" || unit == ''){
-        return errors.push("Invalid ingredient name");
+        return errors.push("Invalid ingredient unit");
       }
     });
   }
@@ -113,21 +113,21 @@ internals.create = function (req, res) {
       // Action
       var action = step.action || '';
       if(typeof action !== "string" || action.length < 10){
-        errors.push('Actions steps should be at least 10 characters long');
+        errors.push('Actions steps are strings with at least 10 characters');
       }
       // Step number
       var stepnb = step.number || 0;
       if(stepnb !== stepCount){
-        errors.push('Steps not in correct order');
+        errors.push('Steps not a number or not in correct order');
       }
       // Time
       var time = step.time;
-      if(typeof time !== undefined && (typeof time !== "number" || time < 0)){
+      if(typeof time !== "undefined" && (typeof time !== "number" || time < 0)){
         errors.push('Step time should be a number');
       }
       // Picture
       var picture = step.picture || {};
-      if(typeof picture.url !== "string" || typeof picture.thumbUrl !== "string"){
+      if(typeofpicture !== "undefined" && (typeof picture.url !== "string" || typeof picture.thumbUrl !== "string")){
         errors.push('Picture format: {thumbUrl: __, url: __}');
       }
     });
