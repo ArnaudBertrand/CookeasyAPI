@@ -9,7 +9,7 @@ var express = require('express'),
 var internals = {};
 internals.diverse = require('./handlers/diverse.js');
 internals.recipe = require('./handlers/recipe.js');
-internals.upload = require('./handlers/upload.js');
+internals.picture = require('./handlers/picture.js');
 internals.user = require('./handlers/user.js');
 
 // Application environment
