@@ -7,7 +7,7 @@ internals.upload = function(req,res){
   var file = req.files.file;
   var id = req.params.id;
   var author = req.user.username;
-  var tags = req.params.tags || [];
+  var tags = req.body.tags || [];
 
   // Upload
   cloudinary.uploader.upload(
