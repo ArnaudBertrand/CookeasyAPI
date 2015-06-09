@@ -141,7 +141,7 @@ internals.create = function (req, res) {
 
   // Time
   recipe.time = req.body.time;
-  if(!(typeof recipe.time === "number"  && (reipe.time%1)===0) || recipe.time < 0){
+  if(!(typeof recipe.time === "number"  && (recipe.time%1)===0) || recipe.time < 0){
     errors.push('Time should be a position number');
   }
 
