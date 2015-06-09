@@ -4,6 +4,7 @@ var TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION * 60;
 
 // Middleware for token verification
 exports.verifyToken = function (req, res, next) {
+  console.log(req);
   var token = getToken(req.headers);
 
   redisClient.get(token, function (err, reply) {
@@ -24,7 +25,7 @@ exports.verifyToken = function (req, res, next) {
 
 exports.expireToken = function(headers) {
   var token = getToken(headers);
-  
+
   if (token != null) {
     redisClient.set(token, { is_expired: true });
     redisClient.expire(token, TOKEN_EXPIRATION_SEC);

@@ -19,6 +19,7 @@ internals.upload = function(req,res){
       picture.miniThumbUrl = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
       picture.thumbUrl = cloudinary.url(result.public_id, { width: 300, height: 300, crop: "fill" });
       picture.author = author;
+      picture.createdOn =  Date.now();
 
       res.send({picture: picture});
     },
