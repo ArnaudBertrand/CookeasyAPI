@@ -30,11 +30,6 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(function(req,res,next){
-  console.log(req.headers);
-  console.log(req.headers.authorization);
-  next();
-});
 
 // Routes
 var router = express.Router();
