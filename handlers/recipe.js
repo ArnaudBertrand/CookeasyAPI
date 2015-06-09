@@ -139,8 +139,14 @@ internals.create = function (req, res) {
     errors.push('Picture format: {thumbUrl: __, url: __}');
   }
 
+  // Time
+  recipe.time = step.time;
+  if(!(typeof time === "number"  && (time%1)===0) || time < 0){
+    errors.push('Time should be a position number');
+  }
+
   // Author of the recipe
-  var user = req.user;
+  recipe.user = req.user;
 
   // Utensils
   recipe.utensils = req.body.utensils || [];
