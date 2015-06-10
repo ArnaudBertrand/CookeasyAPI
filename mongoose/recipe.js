@@ -11,6 +11,7 @@ var RecipeSchema = new Schema({
   imageUrl: String,
   ingredients: [],
   nbPerson: Number,
+  pictures: {},
   pictures: [],
   steps: [],
   time: Number,
