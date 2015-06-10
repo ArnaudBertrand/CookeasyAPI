@@ -122,8 +122,9 @@ internals.create = function (req, res) {
       }
       // Time
       var time = step.time;
+      console.log(time);
       if(typeof time !== "undefined" && (!(typeof time === "number"  && (time%1)===0) || time < 0)){
-        errors.push('Step time should be a position number');
+        errors.push('Step time should be a positive number');
       }
       // Picture
       var picture = step.picture;
@@ -142,7 +143,7 @@ internals.create = function (req, res) {
   // Time
   recipe.time = req.body.time;
   if(!(typeof recipe.time === "number"  && (recipe.time%1)===0) || recipe.time < 0){
-    errors.push('Time should be a position number');
+    errors.push('Time should be a positive number');
   }
 
   // Author of the recipe
