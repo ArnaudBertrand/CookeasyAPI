@@ -11,7 +11,7 @@ var RecipeSchema = new Schema({
   imageUrl: String,
   ingredients: [],
   nbPerson: Number,
-  pictures: {},
+  pictures: Schema.Types.Mixed,
   pictures: [],
   steps: [],
   time: Number,
