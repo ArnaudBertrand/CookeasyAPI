@@ -162,6 +162,7 @@ internals.create = function (req, res) {
 
   // Check for errors
   if(errors.length){
+    console.log(errors);
     return res.send(errors,400);
   }
 
