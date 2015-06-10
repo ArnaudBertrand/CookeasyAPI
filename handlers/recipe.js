@@ -146,7 +146,7 @@ internals.create = function (req, res) {
   }
 
   // Author of the recipe
-  recipe.user = req.user;
+  recipe.user = req.user.username;
 
   // Utensils
   recipe.utensils = req.body.utensils || [];
