@@ -122,14 +122,13 @@ internals.create = function (req, res) {
       }
       // Time
       var time = step.time;
-      console.log(time);
       if(typeof time !== "undefined" && (!(typeof time === "number"  && (time%1)===0) || time < 0)){
         errors.push('Step time should be a positive number');
       }
       // Picture
       var picture = step.picture;
       if(typeof picture !== "undefined" && (typeof picture.url !== "string" || typeof picture.thumbUrl !== "string")){
-        errors.push('Picture format: {thumbUrl: __, url: __}');
+        errors.push('Step picture format: {thumbUrl: __, url: __}');
       }
     });
   }
@@ -137,7 +136,7 @@ internals.create = function (req, res) {
   // Recipe picture
   recipe.picture = req.body.picture || {};
   if(typeof recipe.picture.url !== "string" || typeof recipe.picture.thumbUrl !== "string"){
-    errors.push('Picture format: {thumbUrl: __, url: __}');
+    errors.push('Main picture format: {thumbUrl: __, url: __}');
   }
 
   // Time
@@ -147,7 +146,7 @@ internals.create = function (req, res) {
   }
 
   // Author of the recipe
-  recipe.user = req.user.username;
+  recipe.author = req.user.username;
 
   // Utensils
   recipe.utensils = req.body.utensils || [];
@@ -163,7 +162,6 @@ internals.create = function (req, res) {
 
   // Check for errors
   if(errors.length){
-    console.log(errors);
     return res.send(errors,400);
   }
 
