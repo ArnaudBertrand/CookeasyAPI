@@ -241,7 +241,7 @@ internals.uploadPictures = function(req,res){
         if(err){
           return res.send({error: err});
         }
-        res.send(picture);
+        res.send({picture: picture});
       });
     },
     {
