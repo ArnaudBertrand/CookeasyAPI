@@ -160,6 +160,8 @@ internals.create = function (req, res) {
     errors.push('Utensils should be array');
   }
 
+  console.log(errors);
+
   // Check for errors
   if(errors.length){
     return res.send(errors,400);
