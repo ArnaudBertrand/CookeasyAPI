@@ -250,8 +250,7 @@ internals.uploadPictures = function(req,res){
       height: 800,
       tags: tags
     }
-  )
-};
+  );
 };
 
 module.exports = internals;
