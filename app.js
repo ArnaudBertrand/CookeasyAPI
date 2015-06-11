@@ -44,7 +44,6 @@ router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.ve
 router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
 router.delete('/recipe/delete/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.delete);
 router.post('/recipe/pictures/upload/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipe.uploadPictures);
-router.post('/recipe/step/picture/upload', jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipe.uploadStepPicture);
 router.post('/picture/upload', jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.picture.upload);
 app.use('/',router);
 // Create a server with a host and port
