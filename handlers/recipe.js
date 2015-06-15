@@ -199,6 +199,27 @@ internals.get = function(req,res){
   });
 };
 
+internals.getTrends = function(req,res){
+  var offset =  parseInt(req.params.offset);
+  var nb =  parseInt(req.params.offset);
+
+  if(isNaN(offset)){
+    offset = 0;
+  }
+
+  if(isNaN(nb)){
+    nb = 15;
+  }
+  
+  Recipe.findOne({_id: "557881a4fcea910300386673"},function(err, recipe){
+    if(recipe){
+      res.send({recipes: [recipe]});
+    } else {
+      res.send({error: "Server error"});
+    }
+  });
+};
+
 internals.search = function(req,res){
   var search = req.body.search || '';
 
