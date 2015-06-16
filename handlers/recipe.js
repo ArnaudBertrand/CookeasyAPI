@@ -68,23 +68,25 @@ internals.create = function (req, res) {
       } else {
         // Add the ingredient to the ingredient list if it doesn't exist
         name = name.toLowerCase();
-        if(!Ingredient.where({name: name}).count()){
-          var ing = new Ingredient({name: name});
-          ing.save(function(err){
-            if(err){
-              return res.send({error: err});
-            }
-          });
-        }
+        // Ingredient.where({name: name}).count(function(err,count){
+        //   if(count){
+        //     var ing = new Ingredient({name: name});
+        //     ing.save(function(err){
+        //       if(err){
+        //         return res.send({error: err});
+        //       }
+        //     });
+        //   }
+        // });
       }
       // Quantity
       var qte = ingredient.qte;
-      if(typeof qte !== 'number' || qte < 0){
+      if(typeof qte !== "undefined" && (typeof qte !== 'number' || qte < 0)){
         return errors.push("Invalid ingredient quantity");
       }
       // Unit
       var unit = ingredient.unit;
-      if(typeof unit !== "string" || unit == ''){
+      if(typeof unit !== "undefined" && (typeof unit !== "string")){
         return errors.push("Invalid ingredient unit");
       }
     });
@@ -127,7 +129,7 @@ internals.create = function (req, res) {
       }
       // Picture
       var picture = step.picture;
-      if(typeof picture !== "undefined" && (typeof picture.url !== "string" || typeof picture.thumbUrl !== "string")){
+      if(typeof picture !== "undefined" && typeof picture !== "object"){
         errors.push('Step picture format: {thumbUrl: __, url: __}');
       }
     });
@@ -135,7 +137,7 @@ internals.create = function (req, res) {
 
   // Recipe picture
   recipe.picture = req.body.picture || {};
-  if(typeof recipe.picture.url !== "string" || typeof recipe.picture.thumbUrl !== "string"){
+  if(typeof recipe.picture !== "object"){
     errors.push('Main picture format: {thumbUrl: __, url: __}');
   }
 
@@ -210,7 +212,7 @@ internals.getTrends = function(req,res){
   if(isNaN(nb)){
     nb = 15;
   }
-  
+
   Recipe.findOne({_id: "557881a4fcea910300386673"},function(err, recipe){
     if(recipe){
       res.send({recipes: [recipe]});
