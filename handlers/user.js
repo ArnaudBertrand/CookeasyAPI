@@ -100,11 +100,11 @@ function UserHandler (){
     var user = req.body;
 
     var keys = Object.keys(user);
-    for(var i = 0; i<keys.length; i++){
-      var key()
-        var field = user[keys[i]];
-    }
-
+    //for(var i = 0; i<keys.length; i++){
+    //  var key()
+    //    var field = user[keys[i]];
+    //}
+    console.log(keys);
     return res.send('ok');
   };
 }
