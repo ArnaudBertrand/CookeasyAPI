@@ -39,6 +39,8 @@ router.get('/recipe/getTrends', internals.recipe.getTrends);
 router.post('/recipe/search', internals.recipe.search);
 router.post('/user/login', internals.user.login);
 router.post('/user/signup', internals.user.signup);
+// User routes
+router.post('/user',internals.user.signup);
 router.get('/user/:username', internals.user.getFromUsername);
 
 // Privates routes

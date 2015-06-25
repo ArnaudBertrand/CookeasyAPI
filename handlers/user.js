@@ -91,7 +91,21 @@ internals.signup = function(req, res){
 
 internals.getFromUsername = function(req,res){
   var username =  req.params.username || '';
-  User.findOne({username: username},function(err,user){
+  if(typeof username !== 'string' || username.length == 0){
+    return res.send({error: 'No username'},400);
+  }
+
+  var projection = {
+    activities: 1,
+    description: 1,
+    dob: 1,
+    level: 1,
+    location: 1,
+    picture: 1,
+    username: 1
+  };
+
+  User.findOne({username: username},projection,function(err,user){
     if(err){
       res.send({error: err});
     }
