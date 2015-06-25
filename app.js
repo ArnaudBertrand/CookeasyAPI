@@ -40,8 +40,9 @@ router.post('/recipe/search', internals.recipe.search);
 router.post('/user/login', internals.user.login);
 router.post('/user/signup', internals.user.signup);
 // User routes
-router.post('/user',internals.user.signup);
 router.get('/user/:username', internals.user.getFromUsername);
+router.post('/user',internals.user.signup);
+router.put('/user',internals.user.update);
 
 // Privates routes
 router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);

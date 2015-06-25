@@ -109,8 +109,12 @@ internals.getFromUsername = function(req,res){
     if(err){
       res.send({error: err});
     }
-    res.send({user: user});
+    res.send(user);
   });
+};
+
+internals.update = function(req,res){
+  return res.send('ok');
 };
 
 module.exports = internals;
