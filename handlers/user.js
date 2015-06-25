@@ -89,4 +89,14 @@ internals.signup = function(req, res){
 
 };
 
+internals.getFromUsername = function(req,res){
+  var username =  req.params.username || '';
+  User.findOne({username: username},function(err,user){
+    if(err){
+      res.send({error: err});
+    }
+    res.send({user: user});
+  });
+};
+
 module.exports = internals;

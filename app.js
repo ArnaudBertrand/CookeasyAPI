@@ -39,6 +39,7 @@ router.get('/recipe/getTrends', internals.recipe.getTrends);
 router.post('/recipe/search', internals.recipe.search);
 router.post('/user/login', internals.user.login);
 router.post('/user/signup', internals.user.signup);
+router.get('/user/:username', internals.user.getFromUsername);
 
 // Privates routes
 router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
