@@ -22,7 +22,7 @@ var multipartyMiddleware = multiparty();
 // Set up
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "PUT, GET, POST, DELETE, OPTIONS");
+  res.header("Allow", "PUT, GET, POST, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
