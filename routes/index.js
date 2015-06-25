@@ -1,4 +1,5 @@
-var jwt = require('express-jwt'),
+var express = require('express'),
+    jwt = require('express-jwt'),
     multiparty = require('connect-multiparty'),
     ErrorHandler = require('./error').errorHandler,
     secret = require('./../config/secret.js'),
