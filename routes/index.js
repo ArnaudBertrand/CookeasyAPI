@@ -19,7 +19,6 @@ module.exports = exports = function(app) {
 
    // Routes
     var router = express.Router();
-    router.get('/', internals.diverse.home);
     router.get('/recipe/get/:id', internals.recipe.get);
     router.get('/recipe/getTrends', internals.recipe.getTrends);
     router.post('/recipe/search', internals.recipe.search);
