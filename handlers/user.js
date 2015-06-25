@@ -1,9 +1,10 @@
 var jwt = require('jsonwebtoken'),
     secret = require('./../config/secret.js'),
-    User = require('./../mongoose/user.js');
+    User = require('./../mongoose/user.js'),
+    UserDao = require('./../dao/user.dao.js');
 
 function UserHandler (){
-  this.login = function(req, res){
+  this.login = function(req, res, next){
     // ID
     var id = req.body.id || '';
     if(typeof id !== "string"){
@@ -19,29 +20,12 @@ function UserHandler (){
     // Find user
     var query = isEmail ? {email: id} : {username: id};
 
-    User.findOne(query, function(err,user){
-      // Check for errors
-      if(err){
-        return res.send({error: err});
-      }
-      // Check for user
-      if(!user){
-        return res.send({error: 'User not found'},400);
-      }
-      // Check for password
-      user.comparePassword(password, function(err, isValid){
-        if(err){
-          return res.send({error: err});
-        }
-
-        if(!isValid){
-          return res.send({error: 'Wrong password'},400);
-        }
-
-        // Create token
-        var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
-        res.send({token: token});
-      });
+    UserDao.login(query, function(err,success,result){
+      if(err) return next(err);
+      if(!success) return res.send(result,400);
+      // Create and send token
+      var token = jwt.sign(result, secret.secretToken, { expiresInMinutes: 60 });
+      res.send({token: token});
     });
   };
 
@@ -117,7 +101,7 @@ function UserHandler (){
 
     var keys = Object.keys(user);
     for(var i = 0; i<keys.length; i++){
-      if(key)
+      var key()
         var field = user[keys[i]];
     }
 
