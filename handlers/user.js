@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken'),
     secret = require('./../config/secret.js'),
     User = require('./../mongoose/user.js');
 
-function UserHandler (db){
+function UserHandler (){
   this.login = function(req, res){
     // ID
     var id = req.body.id || '';

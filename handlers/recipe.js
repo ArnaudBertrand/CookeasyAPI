@@ -1,6 +1,6 @@
 var cloudinary = require('cloudinary'),
     Recipe = require('./../mongoose/recipe.js'),
-    Ingredient = require('./../mongoose/ingredients');
+    Ingredient = require('./../mongoose/ingredients.js');
 
 // Cloudinary config - Image storing
 cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
