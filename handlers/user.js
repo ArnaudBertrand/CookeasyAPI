@@ -125,4 +125,4 @@ function UserHandler (){
   };
 }
 
-UserHandler.exports = internals;
+methods.exports = UserHandler;
