@@ -20,7 +20,7 @@ function UserHandler (){
     // Find user
     var query = isEmail ? {email: id} : {username: id};
 
-    UserDao.login(query, function(err,success,result){
+    UserDao.login(query,password,function(err,success,result){
       if(err) return next(err);
       if(!success) return res.send(result,400);
       // Create and send token

@@ -4,7 +4,7 @@ var UserDao = {
   login: login
 };
 
-function login (query,callback){
+function login (query,password,callback){
   User.findOne(query,function(err,user){
     if(err) return callback(err,null,null);
     if(!user) return callback(null,false,{userId: "User not found"});
