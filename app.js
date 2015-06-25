@@ -22,7 +22,7 @@ var multipartyMiddleware = multiparty();
 // Set up
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "GET, PUT, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "PUT, GET, POST, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
 });
@@ -42,7 +42,7 @@ router.post('/user/signup', internals.user.signup);
 // User routes
 router.get('/user/:username', internals.user.getFromUsername);
 router.post('/user',internals.user.signup);
-router.put('/user',internals.user.update);
+router.put('/user/:username',internals.user.update);
 
 // Privates routes
 router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
