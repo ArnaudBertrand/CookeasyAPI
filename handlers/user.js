@@ -125,4 +125,4 @@ function UserHandler (){
   };
 }
 
-methods.exports = UserHandler;
+module.exports = UserHandler;
