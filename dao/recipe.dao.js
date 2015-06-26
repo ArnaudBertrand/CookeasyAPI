@@ -54,7 +54,7 @@ function getTrends(nb,callback){
   Recipe.find({},function(err, recipes){
     if(err) return callback(err);
 
-    callback(null,{recipe: recipes});
+    callback(null,recipes);
   }).limit(nb);
 }
 
