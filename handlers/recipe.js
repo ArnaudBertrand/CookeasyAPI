@@ -204,9 +204,10 @@ function RecipeHandler(){
 
     var offset = req.params.offset || 0;
     if(validator.isInt(offset)) errors.offset = 'Offset not integer';
-
-    var nb = req.params.offset || 15;
-    if(validator.isInt(offset)) errors.offset = 'Nb of recipe not integer';
+    console.log(offset + " - " + typeof offset);
+    var nb = req.params.nb || 15;
+    if(validator.isInt(nb)) errors.nb = 'Nb of recipe not integer';
+    console.log(nb + " - " + typeof nb);
 
     if(Object.keys(errors).length > 0) return res.send(errors,400);
 
