@@ -195,7 +195,7 @@ function RecipeHandler(){
     RecipeDao.get(id,function(err,fail,recipe){
       if(err) return next(err);
       if(fail) return res.send(fail,400);
-      res.send(comments);
+      res.send(recipe);
     })
   };
 
