@@ -1,8 +1,10 @@
 var cloudinary = require('cloudinary'),
-    validator = require('validator'),
+    Validator = require('jsonschema').Validator,
     Recipe = require('./../mongoose/recipe.js'),
     Ingredient = require('./../mongoose/ingredient.js'),
     RecipeDao = require('./../dao/recipe.dao.js');
+
+var v = new Validator();
 
 // Cloudinary config - Image storing
 cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
@@ -203,12 +205,12 @@ function RecipeHandler(){
     var errors = {};
 
     var offset = req.params.offset || 0;
-    if(validator.isInt(offset)) errors.offset = 'Offset not integer';
-    console.log(offset + " - " + typeof offset);
+    if(v.validate(offset,offsetSchema)) errors.offset = 'Offset not integer';
     var nb = req.params.nb || 15;
-    if(validator.isInt(nb)) errors.nb = 'Nb of recipe not integer';
-    console.log(nb + " - " + typeof nb);
+    if(v.validate(nb,numberSchema)) errors.nb = 'Nb of recipe not integer';
 
+    console.log(errors);
+    
     if(Object.keys(errors).length > 0) return res.send(errors,400);
 
     RecipeDao.getTrends(offset,nb,function(err,fail,recipes){
@@ -281,4 +283,31 @@ function RecipeHandler(){
   };
 }
 
+// Recipe schemas
+var courseSchema = {"type": "integer", "minimum": 1, "maximum": 3, "required": true},
+    difficultySchema = {"type": "integer", "minimum": 1, "maximum": 5, "required": true},
+    ingredientsSchema = {"type": "array", "items": {"$ref": "/ingredient"}, "required": true},
+    ingredientSchema = {"type": "object", "properties": {
+      "name": {"type": "string", "required": true},
+      "qte": {"type": "number", "minimum": 0},
+      "unit": {"type": "string"}}},
+    nameSchema = {"type": "string", "required": true},
+    nbPersonSchema = {"type": "integer", "minimum": 1, "required": true},
+    stepsSchema = {"type": "array", "items": {"$ref": "/step"}, "required": true},
+    stepSchema = {"type": "object", "properties": {
+      "action": {"type": "string", "required": true},
+      "number": {"type": "integer", "minimum": 0, "required": true},
+      "time": {"type": "integer"},
+      "picture": {"type": "string"}
+    }},
+    pictureSchema = {"type": "string", "required": true},
+    timeSchema = {"type": "number", "minimum": 0, "required": true},
+    utensilsSchema = {"type": "array", "items": {"type": "string"}};
+
+// Search schemas
+var offsetSchema = {"type": "integer", "minimum": 0},
+    numberSchema = {"type": "integer", "minimum": 0};
+
+v.addSchema(ingredientSchema, '/ingredient');
+v.addSchema(stepSchema, '/step');
 module.exports = RecipeHandler;
