@@ -205,12 +205,12 @@ function RecipeHandler(){
     var errors = {};
 
     var offset = req.params.offset || 0;
-    if(v.validate(offset,offsetSchema)) errors.offset = 'Offset not integer';
+    if(!v.validate(offset,offsetSchema)) errors.offset = 'Offset not integer';
     var nb = req.params.nb || 15;
-    if(v.validate(nb,numberSchema)) errors.nb = 'Nb of recipe not integer';
+    if(!v.validate(nb,numberSchema)) errors.nb = 'Nb of recipe not integer';
 
-    console.log(errors);
-    
+    console.log(v.validate(nb,numberSchema));
+    console.log(v.validate("salut",numberSchema));
     if(Object.keys(errors).length > 0) return res.send(errors,400);
 
     RecipeDao.getTrends(offset,nb,function(err,fail,recipes){
