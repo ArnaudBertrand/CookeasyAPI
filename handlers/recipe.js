@@ -204,18 +204,13 @@ function RecipeHandler(){
   this.getTrends = function(req,res){
     var errors = {};
 
-    var offset = req.params.offset || 0;
-    if(!v.validate(offset,offsetSchema)) errors.offset = 'Offset not integer';
     var nb = req.params.nb || 15;
     if(!v.validate(nb,numberSchema)) errors.nb = 'Nb of recipe not integer';
 
-    console.log(v.validate(nb,numberSchema));
-    console.log(v.validate("salut",numberSchema));
     if(Object.keys(errors).length > 0) return res.send(errors,400);
 
-    RecipeDao.getTrends(offset,nb,function(err,fail,recipes){
+    RecipeDao.getTrends(nb,function(err,recipes){
       if(err) return next(err);
-      if(fail) return res.send(fail,400);
       res.send(recipes);
     });
   };
@@ -305,8 +300,7 @@ var courseSchema = {"type": "integer", "minimum": 1, "maximum": 3, "required": t
     utensilsSchema = {"type": "array", "items": {"type": "string"}};
 
 // Search schemas
-var offsetSchema = {"type": "integer", "minimum": 0},
-    numberSchema = {"type": "integer", "minimum": 0};
+var numberSchema = {"type": "integer", "minimum": 0};
 
 v.addSchema(ingredientSchema, '/ingredient');
 v.addSchema(stepSchema, '/step');

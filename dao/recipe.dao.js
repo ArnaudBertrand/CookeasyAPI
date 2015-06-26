@@ -50,14 +50,12 @@ function get(id,callback){
   });
 }
 
-function getTrends(offset,nb,callback){
-  Recipe.findOne({_id: "557881a4fcea910300386673"},function(err, recipe){
-    if(recipe){
-      res.send({recipes: [recipe]});
-    } else {
-      res.send({error: "Server error"});
-    }
-  });
+function getTrends(nb,callback){
+  Recipe.find({},function(err, recipes){
+    if(err) return callback(err);
+
+    callback(null,{recipe: recipes});
+  }).limit(nb);
 }
 
 function search(){
