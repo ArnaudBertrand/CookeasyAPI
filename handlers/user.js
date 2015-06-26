@@ -1,6 +1,5 @@
 var jwt = require('jsonwebtoken'),
     secret = require('./../config/secret.js'),
-    User = require('./../mongoose/user.js'),
     UserDao = require('./../dao/user.dao.js');
 
 function UserHandler (){
@@ -20,11 +19,11 @@ function UserHandler (){
     // Find user
     var query = isEmail ? {email: id} : {username: id};
 
-    UserDao.login(query,password,function(err,success,result){
+    UserDao.login(query,password,function(err,fail,user){
       if(err) return next(err);
-      if(!success) return res.send(result,400);
+      if(fail) return res.send(fail,400);
       // Create and send token
-      var token = jwt.sign(result, secret.secretToken, { expiresInMinutes: 60 });
+      var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
       res.send({token: token});
     });
   };
@@ -47,28 +46,13 @@ function UserHandler (){
       return res.send({error: 'Username too short'},400);
     }
 
-    // Find if username and email already exist
-    User.where({username: user.username}).count(function(err, count){
-      if(count){
-        return res.send({error: "Username already in use"});
-      }
-      User.where({email: user.email}).count(function(err, count){
-        if(count){
-          return res.send({error: "E-mail already in use"});
-        }
-
-        // Create user
-        var newUser = new User(user);
-        newUser.save(function(err){
-          if(err){
-            res.send({error: err});
-          } else{
-            var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
-            res.send({success: true, token: token});
-          }
-        });
-      });
-    })
+    UserDao.signup(user,function(err,fail){
+      if(err) return next(err);
+      if(fail) return res.send(err,400);
+      // Create and send token
+      var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
+      res.send({success: true, token: token});
+    });
 
   };
 
@@ -78,22 +62,11 @@ function UserHandler (){
       return res.send({error: 'No username'},400);
     }
 
-    var projection = {
-      activities: 1,
-      description: 1,
-      dob: 1,
-      level: 1,
-      location: 1,
-      picture: 1,
-      username: 1
-    };
-
-    User.findOne({username: username},projection,function(err,user){
-      if(err){
-        res.send({error: err});
-      }
+    UserDao.getFromUsername(username,function(err,fail,user){
+      if(err) return next(err);
+      if(fail) return res.send(,400);
       res.send(user);
-    });
+    })
   };
 
   this.update = function(req,res){
