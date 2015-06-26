@@ -1,12 +1,14 @@
 var cloudinary = require('cloudinary'),
+    validator = require('validator'),
     Recipe = require('./../mongoose/recipe.js'),
-    Ingredient = require('./../mongoose/ingredient.js');
+    Ingredient = require('./../mongoose/ingredient.js'),
+    Recipe = require('./../dao/recipe.dao.js');
 
 // Cloudinary config - Image storing
 cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
 
 function RecipeHandler(){
-  this.addComment = function(req, res){
+  this.addComment = function(req, res, next){
     var comment = {};
     comment.message = req.body.message || '';
     comment.mark = req.body.mark || 0;
@@ -26,16 +28,14 @@ function RecipeHandler(){
     // Set user
     comment.author = req.user.username;
     // Add date
-    comment.date = Date.now();
+    comment.createdOn = Date.now();
 
-    // Add comment
-    Recipe.findByIdAndUpdate(req.params.id,{$push: {"comments": comment}}, {safe: true, upsert: true},function(err, model){
-      if(err){
-        return res.send({error: err});
-      }
-      res.send({comment: comment});
+    RecipeDao.addComment(req.params.id,comment,function(err,fail,comments){
+      if(err) return next(err);
+      if(fail) return res.send(fail,400);
+      res.send(comments);
     });
-  }
+  };
 
   // Routes handlers
   this.create = function (req, res) {
@@ -172,9 +172,9 @@ function RecipeHandler(){
     recipe.createdOn = Date.now();
 
     // Create the recipe
-    var recipe = new Recipe(recipe);
-    recipe.save(function(err){
-      res.send({id: recipe._id});
+    RecipeDao.create(recipe,function(err,rcpId){
+      if(err) return next(err);
+      res.send(rcpId);
     });
   };
 
@@ -191,33 +191,29 @@ function RecipeHandler(){
 
   this.get = function(req,res){
     var id =  req.params.id || '';
-    Recipe.findOne({_id: id},function(err, recipe){
-      if(recipe){
-        res.send({recipe: recipe});
-      } else {
-        res.send({error: "Recipe does not exist"});
-      }
-    });
+
+    RecipeDao.get(id,function(err,fail,recipe){
+      if(err) return next(err);
+      if(fail) return res.send(fail,400);
+      res.send(comments);
+    })
   };
 
   this.getTrends = function(req,res){
-    var offset =  parseInt(req.params.offset);
-    var nb =  parseInt(req.params.offset);
+    var errors = {};
 
-    if(isNaN(offset)){
-      offset = 0;
-    }
+    var offset = req.params.offset || 0;
+    if(validator.isInt(offset)) errors.offset = 'Offset not integer';
 
-    if(isNaN(nb)){
-      nb = 15;
-    }
+    var nb = req.params.offset || 15;
+    if(validator.isInt(offset)) errors.offset = 'Nb of recipe not integer';
 
-    Recipe.findOne({_id: "557881a4fcea910300386673"},function(err, recipe){
-      if(recipe){
-        res.send({recipes: [recipe]});
-      } else {
-        res.send({error: "Server error"});
-      }
+    if(Object.keys(errors).length > 0) return res.send(errors,400);
+
+    RecipeDao.getTrends(offset,nb,function(err,fail,recipes){
+      if(err) return next(err);
+      if(fail) return res.send(fail,400);
+      res.send(recipes);
     });
   };
 

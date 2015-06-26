@@ -15,7 +15,8 @@
     "mongoose": "4.0.2",
     "morgan": "~1.0.0",
     "multiparty": "^4.1.2",
-    "redis": "~0.12.1"
+    "redis": "~0.12.1",
+    "validator": "^3.40.1"
   },
   "devDependencies": {},
   "scripts": {
