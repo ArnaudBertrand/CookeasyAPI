@@ -48,7 +48,7 @@ function UserHandler (){
 
     UserDao.signup(user,function(err,fail){
       if(err) return next(err);
-      if(fail) return res.send(err,400);
+      if(fail) return res.send(fail,400);
       // Create and send token
       var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
       res.send({success: true, token: token});
@@ -64,7 +64,7 @@ function UserHandler (){
 
     UserDao.getFromUsername(username,function(err,fail,user){
       if(err) return next(err);
-      if(fail) return res.send(,400);
+      if(fail) return res.send(fail,400);
       res.send(user);
     })
   };
