@@ -5,7 +5,7 @@ var IngredientSchema = new Schema({
   name: { type: String, required: true, index: { unique: true } },
   type: Number,
   tip: String,
-  picture: String
+  picture: String,
   new: {type: Boolean, default: true}
 });
 
