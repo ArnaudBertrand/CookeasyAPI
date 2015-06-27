@@ -27,15 +27,6 @@ function addComment(id,comment,callback){
       callback(null,null);
     });
   });
-  //    {$push: {comments: {$each: [comment], $sort: {createdOn:- 1}}}},
-  //    {runValidators: true, safe: true, upsert: true, new: true},
-  //    function(err, recipe){
-  //      if(err) return callback(err);
-  //      if(!recipe) return callback(null,{recipe: 'Recipe not exisiting'});
-  //
-  //      callback(null,null,recipe.comments);
-  //    }
-  //);
 }
 
 function addUsersPicture(){
@@ -65,8 +56,20 @@ function get(id,callback){
   });
 }
 
-function getTrends(nb,callback){
-  Recipe.find({},function(err, recipes){
+function getRecipes(nb,filter,callback){
+  var selector = {};
+
+  // Matching filter
+  if(filter.match){
+    var items = filter.match.split(' '),
+        regex = '';
+    items.forEach(function(e){
+      regex += '(?=.*' + e + '.*)';
+    });
+    selector.name = {$regex: regex, $options: "i"};
+  }
+
+  Recipe.find(selector,function(err, recipes){
     if(err) return callback(err);
 
     callback(null,recipes);
