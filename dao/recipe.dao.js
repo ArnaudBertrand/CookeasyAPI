@@ -1,4 +1,5 @@
 var Recipe = require('./../mongoose/recipe.js');
+    IngredientDao = require('./../dao/ingredient.dao.js');
 
 var RecipeDao = {
   addComment: addComment,

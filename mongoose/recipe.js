@@ -39,4 +39,20 @@ var RecipeSchema = new Schema({
   updatedOn: {type: Date, default: Date.now}
 });
 
+RecipeSchema.post('save', function(doc){
+  var recipe = this;
+
+  // Add the ingredient to the ingredient list if it doesn't exist
+  if (!recipe.isModified('ingredients')){
+    return;
+  }
+
+  recipe.ingredients.forEach(function(ingredient){
+    IngredientDao.addToRecipe(ingredient,doc._id,function(err){
+      return console.log(err);
+    });
+  });
+});
+
+
 module.exports = Mongoose.model('Recipe', RecipeSchema);
