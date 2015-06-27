@@ -15,7 +15,7 @@ var RecipeHandler = {
   remove: remove,
   search: search,
   uploadPictures: uploadPictures
-}
+};
 
 function addComment (req, res, next){
   var comment = req.body;
