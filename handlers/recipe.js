@@ -42,7 +42,7 @@ function RecipeHandler(){
   // Routes handlers
   this.create = function (req, res) {
     //var errors = [];
-    //var recipe = {};
+    var recipe = req.body;
     //
     ////  Course type
     //recipe.course = req.body.course || 0;
