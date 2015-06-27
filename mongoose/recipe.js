@@ -12,7 +12,7 @@ var CommentSchema = new Schema({
   createdOn: {type: Number, default: Date.now()},
   mark: {type: Number, min: 1, max: 5},
   message: {type: String, required: true},
-  updateOn: {type: Number, default: Date.now()}
+  updateOn: {type: Number, default: Date.now(), index: true}
 });
 
 var StepSchema = new Schema({

@@ -12,16 +12,26 @@ var RecipeDao = {
 };
 
 function addComment(id,comment,callback){
-  Recipe.findByIdAndUpdate(id,
-      {$push: {comments: {$each: [comment], $sort: {createdOn:- 1}}}},
-      {runValidators: true, safe: true, upsert: true, new: true},
-      function(err, recipe){
-        if(err) return callback(err);
-        if(!recipe) return callback(null,{recipe: 'Recipe not exisiting'});
+  Recipe.findOne(id, function(err,recipe){
+    if(err) return callback(err);
+    if(!recipe) return callback(null,{recipe: 'Recipe not exisiting'});
 
-        callback(null,null,recipe.comments);
-      }
-  );
+    recipe.comments.push(comment);
+    recipe.comments.sort(function(a,b){
+      return a.createdOn < b.createdOn;
+    });
+
+    recipe.save();
+  });
+  //    {$push: {comments: {$each: [comment], $sort: {createdOn:- 1}}}},
+  //    {runValidators: true, safe: true, upsert: true, new: true},
+  //    function(err, recipe){
+  //      if(err) return callback(err);
+  //      if(!recipe) return callback(null,{recipe: 'Recipe not exisiting'});
+  //
+  //      callback(null,null,recipe.comments);
+  //    }
+  //);
 }
 
 function addUsersPicture(){
