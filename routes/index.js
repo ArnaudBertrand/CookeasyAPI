@@ -42,7 +42,7 @@ module.exports = exports = function(app) {
   router.post('/user/login', internals.user.login); // change to Get with parameters
   /** ROUTES TO DELETE **/
   router.get('/recipe/getTrends', internals.recipe.getRecipes);
-  router.get('/recipe/get/:id', internals.recipe.get);
+  router.get('/recipe/get/:id', internals.recipe.getRecipe);
   router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
   router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
   router.post('/user/signup', internals.user.signup);
