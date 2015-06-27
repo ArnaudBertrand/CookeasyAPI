@@ -12,9 +12,10 @@ var RecipeDao = {
 };
 
 function addComment(id,comment,callback){
+  Recipe.comments.
   Recipe.findByIdAndUpdate(id,
       {$push: {comments: {$each: [comment], $sort: {createdOn:- 1}}}},
-      {safe: true, upsert: true, new: true},
+      {runValidators: true, safe: true, upsert: true, new: true},
       function(err, recipe){
         if(err) return callback(err);
         if(!recipe) return callback(null,{recipe: 'Recipe not exisiting'});
