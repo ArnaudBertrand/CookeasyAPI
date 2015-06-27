@@ -161,14 +161,15 @@ function RecipeHandler(){
     //}
     //
     //console.log(errors);
+    //
+    //
+    //// Check for errors
+    //if(errors.length){
+    //  return res.send(errors,400);
+    //}
 
     // Author of the recipe
     recipe.author = req.user.username;
-
-    // Check for errors
-    if(errors.length){
-      return res.send(errors,400);
-    }
 
     // Create the recipe
     RecipeDao.create(recipe,function(err,rcpId){
