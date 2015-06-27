@@ -40,7 +40,7 @@ function RecipeHandler(){
   };
 
   // Routes handlers
-  this.create = function (req, res) {
+  this.create = function (req, res, next) {
     //var errors = [];
     var recipe = req.body;
     //
