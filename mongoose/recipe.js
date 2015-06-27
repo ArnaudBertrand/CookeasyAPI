@@ -9,10 +9,10 @@ var IngredientSchema = new Schema({
 
 var CommentSchema = new Schema({
   author: {type: String, required: true},
-  createdOn: {type: Date, default: Date.now},
+  createdOn: {type: Number, default: Date.now()},
   mark: {type: Number, min: 1, max: 5},
   message: {type: String, required: true},
-  updateOn: {type: Date, default: Date.now}
+  updateOn: {type: Number, default: Date.now()}
 });
 
 var StepSchema = new Schema({
@@ -26,7 +26,7 @@ var RecipeSchema = new Schema({
   name: {type: String,required: true, trim: true},
   author: {type: String, required: true},
   course: {type: Number, min: 1, max: 3, required: true},
-  createdOn: {type: Date, default: Date.now},
+  createdOn: {type: Number, default: Date.now()},
   difficulty: {type: Number, min: 1, max: 5, required: true},
   comments: [CommentSchema],
   ingredients: [IngredientSchema],
@@ -36,7 +36,7 @@ var RecipeSchema = new Schema({
   steps: {type: [StepSchema], required: true},
   time: {type: Number, min: 0, required: true},
   utensils: [String],
-  updatedOn: {type: Date, default: Date.now}
+  updatedOn: {type: Number, default: Date.now()}
 });
 
 RecipeSchema.post('save', function(doc){
