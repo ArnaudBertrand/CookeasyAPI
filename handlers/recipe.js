@@ -4,8 +4,6 @@ var cloudinary = require('cloudinary'),
     Ingredient = require('./../mongoose/ingredient.js'),
     RecipeDao = require('./../dao/recipe.dao.js');
 
-var v = new Validator();
-
 // Cloudinary config - Image storing
 cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
 
