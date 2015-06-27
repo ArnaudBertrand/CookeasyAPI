@@ -60,7 +60,7 @@ function create(req, res, next){
 function getRecipe(req,res,next){
   var id =  req.params.id || '';
 
-  RecipeDao.get(id,function(err,fail,recipe){
+  RecipeDao.getRecipe(id,function(err,fail,recipe){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
     res.send(recipe);

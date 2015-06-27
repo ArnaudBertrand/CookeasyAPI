@@ -6,8 +6,8 @@ var RecipeDao = {
   addUsersPicture: addUsersPicture,
   create: create,
   remove: remove,
-  get: get,
-  getTrends: getTrends,
+  getRecipe: getRecipe,
+  getRecipes: getRecipes,
   search: search
 };
 
@@ -47,7 +47,7 @@ function remove(){
 
 }
 
-function get(id,callback){
+function getRecipe(id,callback){
   Recipe.findOne({_id: id},function(err, recipe){
     if(err) return callback(err);
     if(!recipe) return callback(null,{recipe: "Recipe does not exist"});
