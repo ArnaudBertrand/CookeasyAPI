@@ -12,7 +12,6 @@ var RecipeDao = {
 };
 
 function addComment(id,comment,callback){
-  Recipe.comments.
   Recipe.findByIdAndUpdate(id,
       {$push: {comments: {$each: [comment], $sort: {createdOn:- 1}}}},
       {runValidators: true, safe: true, upsert: true, new: true},
