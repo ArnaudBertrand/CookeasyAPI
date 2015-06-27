@@ -21,7 +21,11 @@ function addComment(id,comment,callback){
       return a.createdOn < b.createdOn;
     });
 
-    recipe.save();
+    recipe.save(function(err){
+      if(err) return callback(err);
+
+      callback(null,null,recipe.comments);
+    });
   });
   //    {$push: {comments: {$each: [comment], $sort: {createdOn:- 1}}}},
   //    {runValidators: true, safe: true, upsert: true, new: true},
