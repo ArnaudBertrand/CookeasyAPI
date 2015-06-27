@@ -19,9 +19,8 @@ UserSchema.pre('save', function(next) {
 
   // Hash the password
   bcrypt.hash(user.password, SALT_WORK_FACTOR, function(err, hash) {
-    if (err){
-      return next(err);
-    }
+    if (err) return next(err);
+
     // Override the cleartext password with the hashed one
     user.password = hash;
     next();
