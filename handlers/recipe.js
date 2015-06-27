@@ -56,6 +56,7 @@ function create(req, res, next){
 }
 
 function getRecipe(req,res,next){
+  console.log('handler single');
   var id =  req.params.id || '';
 
   RecipeDao.getRecipe(id,function(err,fail,recipe){
@@ -66,6 +67,7 @@ function getRecipe(req,res,next){
 }
 
 function getRecipes(req,res,next){
+  console.log('handler multi');
   var errors = {};
 
   // Number of recipe validator

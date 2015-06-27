@@ -48,6 +48,7 @@ function remove(){
 }
 
 function getRecipe(id,callback){
+  console.log('dao single');
   Recipe.findOne({_id: id},function(err, recipe){
     if(err) return callback(err);
     if(!recipe) return callback(null,{recipe: "Recipe does not exist"});
@@ -57,6 +58,7 @@ function getRecipe(id,callback){
 }
 
 function getRecipes(nb,filter,callback){
+  console.log('dao multi');
   var selector = {};
 
   // Matching filter
