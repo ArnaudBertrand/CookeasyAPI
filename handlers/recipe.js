@@ -12,28 +12,14 @@ cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_sec
 function RecipeHandler(){
   this.addComment = function(req, res, next){
     var comment = req.body;
-    //comment.message = req.body.message || '';
-    //comment.mark = req.body.mark || 0;
-    //// Check parameter
-    //if(typeof comment.message !== "string" || typeof comment.mark !== "number"){
-    //  return res.send({error: "Wrongs parameters types"});
-    //}
-    //if(comment.message.length < 10 || comment.message.length > 255){
-    //  return res.send({error: "Message should be between 10 and 255 characters"});
-    //}
-    //if(comment.mark < 0 || comment.mark > 5){
-    //  return res.send({error: "Mark should be between 0 and 5"});
-    //} else if(comment.mark == 0){
-    //  delete comment.mark;
-    //}
 
     // Set user
     comment.author = req.user.username;
 
-    RecipeDao.addComment(req.params.id,comment,function(err,fail,comments){
+    RecipeDao.addComment(req.params.id,comment,function(err,fail){
       if(err) return next(err);
       if(fail) return res.send(fail,400);
-      res.send(comments);
+      res.send();
     });
   };
 
