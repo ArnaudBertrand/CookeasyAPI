@@ -15,6 +15,13 @@ var CommentSchema = new Schema({
   updateOn: {type: Date, default: Date.now}
 });
 
+var StepSchema = new Schema({
+  number: {type: Number, min: 1, required: true},
+  action: {type: String, minlength: 10, required: true},
+  picture: Schema.Types.Mixed,
+  time: {type: Number, min: 0}
+});
+
 var RecipeSchema = new Schema({
   name: {type: String,required: true, trim: true},
   author: {type: String, required: true},
@@ -26,7 +33,7 @@ var RecipeSchema = new Schema({
   nbPerson: {type: Number, min:1, required: true},
   picture: Schema.Types.Mixed,
   pictures: [],
-  steps: [],
+  steps: {type: [StepSchema], required: true},
   time: {type: Number, min: 0, required: true},
   utensils: [String],
   updatedOn: {type: Date, default: Date.now}
