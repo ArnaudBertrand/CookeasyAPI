@@ -7,8 +7,9 @@ var PictureDao = {
 function add(picture,callback){
   var picture = new Picture(picture);
   picture.save(picture,function(err,pic){
-    if(err) callback(err);
-    return pic;
+    if(err) return callback(err);
+    
+    callback(null,pic);
   });
 }
 
