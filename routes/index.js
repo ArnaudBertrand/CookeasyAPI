@@ -43,16 +43,16 @@ module.exports = exports = function(app) {
       .post(internals.user.signup);
 
   /** PICTURE **/
-  router.route('/picture')
+  router.route('/pictures')
       .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.picture.upload);
 
   /** LOGIN **/
   router.post('/login',internals.user.login);
 
   /** ROUTES TO CHANGE **/
-  router.post('/recipe/search', internals.recipe.search); // change to Get with parameters
   router.post('/user/login', internals.user.login); // change to Get with parameters
   /** ROUTES TO DELETE **/
+  router.post('/recipe/search', internals.recipe.search); // change to Get with parameters
   router.get('/recipe/get/:id', internals.recipe.getRecipe);
   router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
   router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
