@@ -5,9 +5,10 @@ var PictureDao = {
 };
 
 function add(picture,callback){
-  Picture.save(picture,function(err,picture){
+  var picture = new Picture(picture);
+  picture.save(picture,function(err,pic){
     if(err) callback(err);
-    return picture;
+    return pic;
   });
 }
 
