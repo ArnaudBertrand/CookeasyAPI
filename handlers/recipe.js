@@ -23,10 +23,10 @@ function addComment (req, res, next){
   // Set user
   comment.author = req.user.username;
 
-  RecipeDao.addComment(req.params.id,comment,function(err,fail){
+  RecipeDao.addComment(req.params.id,comment,function(err,fail,comment){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
-    res.send();
+    res.send(comment);
   });
 }
 

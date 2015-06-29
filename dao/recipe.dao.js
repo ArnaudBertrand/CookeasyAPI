@@ -24,7 +24,7 @@ function addComment(id,comment,callback){
     recipe.save(function(err){
       if(err) return callback(err);
 
-      callback(null,null);
+      callback(null,null,comment);
     });
   });
 }
