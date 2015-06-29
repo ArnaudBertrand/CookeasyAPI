@@ -1,5 +1,6 @@
 var Mongoose = require('mongoose'),
-  Schema = Mongoose.Schema;
+    Picture = require('./picture.js'),
+    Schema = Mongoose.Schema;
 
 var IngredientSchema = new Schema({
   name: {type: String, required: true, trim: true, lowercase: true},
@@ -15,24 +16,12 @@ var CommentSchema = new Schema({
   updateOn: {type: Number, default: Date.now(), index: true}
 });
 
-var PictureSchema = new Schema({
-  author: {type: String, required: true},
-  createdOn: {type: Number, required: true},
-  format: {type: String, required: true},
-  height: {type: Number, required: true},
-  public_id: {type: String, required: true},
-  tags: [String],
-  width: {type: Number, required: true}
-});
-
 var StepSchema = new Schema({
   number: {type: Number, min: 1, required: true},
   action: {type: String, minlength: 10, required: true},
   picture: {type: Schema.ObjectId, ref: 'PictureSchema'},
   time: {type: Number, min: 0}
 });
-
-var Picture = Mongoose.model('Picture',PictureSchema);
 
 var RecipeSchema = new Schema({
   name: {type: String,required: true, trim: true},
@@ -44,7 +33,7 @@ var RecipeSchema = new Schema({
   ingredients: [IngredientSchema],
   nbPerson: {type: Number, min:1, required: true},
   picture: {type: Schema.ObjectId, ref: 'PictureSchema', required: true},
-  pictures: [PictureSchema],
+  pictures: [{type: Schema.ObjectId, ref: 'PictureSchema'}],
   steps: {type: [StepSchema], required: true},
   time: {type: Number, min: 0, required: true},
   utensils: [String],
