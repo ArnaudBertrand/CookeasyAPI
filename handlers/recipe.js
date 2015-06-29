@@ -75,7 +75,9 @@ function getRecipes(req,res,next){
 
   // Filters validator
   var filter = {};
-  if(req.params.match) filter.match = req.params.match;
+  if(req.query.match) filter.match = req.query.match;
+  console.log(req.query);
+  console.log(req.query.match);
 
   if(Object.keys(errors).length > 0) return res.send(errors,400);
   console.log(filter);
