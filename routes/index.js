@@ -10,9 +10,9 @@ var express = require('express'),
 
 module.exports = exports = function(app) {
   var internals = {};
-  internals.recipes = recipe;
-  internals.pictures = new pictures();
-  internals.users = new user();
+  internals.recipes = recipes;
+  internals.pictures = pictures;
+  internals.users = users;
 
   // Requires multiparty
   var multipartyMiddleware = multiparty();
