@@ -15,10 +15,20 @@ var CommentSchema = new Schema({
   updateOn: {type: Number, default: Date.now(), index: true}
 });
 
+var PictureSchema = new Schema({
+  author: {type: String, required: true},
+  createdOn: {type: Number, required: true},
+  format: {type: String, required: true},
+  height: {type: Number, required: true},
+  public_id: {type: String, required: true},
+  tags: [String],
+  width: {type: Number, required: true}
+});
+
 var StepSchema = new Schema({
   number: {type: Number, min: 1, required: true},
   action: {type: String, minlength: 10, required: true},
-  picture: Schema.Types.Mixed,
+  picture: PictureSchema,
   time: {type: Number, min: 0}
 });
 
@@ -31,8 +41,8 @@ var RecipeSchema = new Schema({
   comments: [CommentSchema],
   ingredients: [IngredientSchema],
   nbPerson: {type: Number, min:1, required: true},
-  picture: Schema.Types.Mixed,
-  pictures: [],
+  picture: {type: String, required: true},
+  pictures: [PictureSchema],
   steps: {type: [StepSchema], required: true},
   time: {type: Number, min: 0, required: true},
   utensils: [String],
