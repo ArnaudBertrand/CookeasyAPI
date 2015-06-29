@@ -16,7 +16,7 @@ function upload (req,res){
         picture.author = author;
         picture.createdOn =  Date.now();
 
-        res.send({picture: picture});
+        res.send(picture);
       },
       {
         crop: 'limit',
