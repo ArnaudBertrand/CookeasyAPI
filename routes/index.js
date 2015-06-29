@@ -4,15 +4,15 @@ var express = require('express'),
     ErrorHandler = require('./error').errorHandler,
     secret = require('./../config/secret.js'),
     tokenManager = require('./../config/token_manager.js'),
-    recipe = require('./../handlers/recipe.js'),
-    picture = require('./../handlers/picture.js'),
-    user = require('./../handlers/user.js');
+    recipes = require('./../handlers/recipes.js'),
+    pictures = require('./../handlers/pictures.js'),
+    users = require('./../handlers/users.js');
 
 module.exports = exports = function(app) {
   var internals = {};
-  internals.recipe = recipe;
-  internals.picture = new picture();
-  internals.user = new user();
+  internals.recipes = recipe;
+  internals.pictures = new pictures();
+  internals.users = new user();
 
   // Requires multiparty
   var multipartyMiddleware = multiparty();
@@ -21,42 +21,42 @@ module.exports = exports = function(app) {
 
   /** RECIPE **/
   router.route('/recipes')
-      .get(internals.recipe.getRecipes)
-      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
+      .get(internals.recipes.getRecipes)
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.create);
   router.route('/recipes/:id')
-      .get(internals.recipe.getRecipe)
-      .delete(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.remove);
+      .get(internals.recipes.getRecipe)
+      .delete(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.remove);
 
   /** RECIPE -- comments **/
   router.route('/recipes/:id/comments')
-      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.addComment);
 
   /** RECIPE -- pictures **/
   router.route('/recipes/:id/pictures')
-      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipe.uploadPictures);
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipes.uploadPictures);
 
   /** USER **/
   router.route('/users/:username')
-      .get(internals.user.getFromUsername)
-      .put(internals.user.update);
+      .get(internals.users.getFromUsername)
+      .put(internals.users.update);
   router.route('/users')
-      .post(internals.user.signup);
+      .post(internals.users.signup);
 
   /** PICTURE **/
   router.route('/pictures')
-      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.picture.upload);
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.pictures.upload);
 
   /** LOGIN **/
-  router.post('/login',internals.user.login);
+  router.post('/login',internals.users.login);
 
   /** ROUTES TO CHANGE **/
-  router.post('/user/login', internals.user.login); // change to Get with parameters
+  router.post('/user/login', internals.users.login); // change to Get with parameters
   /** ROUTES TO DELETE **/
-  router.post('/recipe/search', internals.recipe.search); // change to Get with parameters
-  router.get('/recipe/get/:id', internals.recipe.getRecipe);
-  router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
-  router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
-  router.post('/user/signup', internals.user.signup);
+  router.post('/recipe/search', internals.recipes.search); // change to Get with parameters
+  router.get('/recipe/get/:id', internals.recipes.getRecipe);
+  router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.create);
+  router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.addComment);
+  router.post('/user/signup', internals.users.signup);
 
 
   app.use('/',router);
