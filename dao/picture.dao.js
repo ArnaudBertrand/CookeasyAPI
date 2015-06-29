@@ -5,7 +5,7 @@ var PictureDao = {
 };
 
 function add(picture,callback){
-  Picture.insert(picture,function(err,picture){
+  Picture.save(picture,function(err,picture){
     if(err) callback(err);
     return picture;
   });
