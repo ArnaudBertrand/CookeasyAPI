@@ -21,6 +21,7 @@ function addComment(id,comment,callback){
       return a.createdOn < b.createdOn;
     });
 
+    console.log(recipe.comments);
     recipe.save(function(err){
       if(err) return callback(err);
 
