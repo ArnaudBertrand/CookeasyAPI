@@ -43,7 +43,7 @@ var RecipeSchema = new Schema({
   comments: [CommentSchema],
   ingredients: [IngredientSchema],
   nbPerson: {type: Number, min:1, required: true},
-  picture: {type: String, required: true},
+  picture: {type: Schema.ObjectId, ref: 'PictureSchema', required: true},
   pictures: [PictureSchema],
   steps: {type: [StepSchema], required: true},
   time: {type: Number, min: 0, required: true},
