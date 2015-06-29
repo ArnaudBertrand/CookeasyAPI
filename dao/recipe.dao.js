@@ -12,7 +12,7 @@ var RecipeDao = {
 };
 
 function addComment(id,comment,callback){
-  Recipe.findOne(id, function(err,recipe){
+  Recipe.findById(id, function(err,recipe){
     if(err) return callback(err);
     if(!recipe) return callback(null,{recipe: 'Recipe not exisiting'});
 
