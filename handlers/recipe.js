@@ -67,7 +67,6 @@ function getRecipe(req,res,next){
 }
 
 function getRecipes(req,res,next){
-  console.log('handler multi');
   var errors = {};
 
   // Number of recipe validator
@@ -75,11 +74,11 @@ function getRecipes(req,res,next){
   if(!validate(nb,{type: "Number", "minimum": 1})) errors.nb = 'Nb of recipe not integer';
 
   // Filters validator
-  var filter = req.body.filter || {};
-  if(!validate(filter,{type: "Object"})) errors.filter = 'Uncorrect filter type';
-  if(!validate(filter.match,{type: "String"})) errors.filter = 'Uncorrect match filter';
+  var filter = {};
+  if(req.params.match) filter.match = req.params.match;
 
   if(Object.keys(errors).length > 0) return res.send(errors,400);
+  console.log(filter);
 
   RecipeDao.getRecipes(nb,filter,function(err,recipes){
     if(err) return next(err);

@@ -20,28 +20,39 @@ module.exports = exports = function(app) {
   var router = express.Router();
 
   /** RECIPE **/
-  router.get('/recipe/:id', internals.recipe.getRecipe);
-  router.get('/recipe', internals.recipe.getRecipes);
-  router.post('/recipe', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
-  router.delete('/recipe/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.remove);
-  // Recipe -- comments
-  router.post('/recipe/comment/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
-  // Recipe -- user pictures
-  router.post('/recipe/pictures/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipe.uploadPictures);
+  router.route('/recipes')
+      .get(internals.recipe.getRecipes)
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
+  router.route('/recipes/:id')
+      .get(internals.recipe.getRecipe)
+      .delete(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.remove);
+
+  /** RECIPE -- comments **/
+  router.route('/recipes/:id/comments')
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);
+
+  /** RECIPE -- pictures **/
+  router.route('/recipes/:id/pictures')
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.recipe.uploadPictures);
 
   /** USER **/
-  router.get('/user/:username', internals.user.getFromUsername);
-  router.post('/user',internals.user.signup);
-  router.put('/user/:username',internals.user.update);
+  router.route('/users/:username')
+      .get(internals.user.getFromUsername)
+      .put(internals.user.update);
+  router.route('/users')
+      .post(internals.user.signup);
 
   /** PICTURE **/
-  router.post('/picture', jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.picture.upload);
+  router.route('/picture')
+      .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, multipartyMiddleware, internals.picture.upload);
+
+  /** LOGIN **/
+  router.post('/login',internals.user.login);
 
   /** ROUTES TO CHANGE **/
   router.post('/recipe/search', internals.recipe.search); // change to Get with parameters
   router.post('/user/login', internals.user.login); // change to Get with parameters
   /** ROUTES TO DELETE **/
-  router.get('/recipe/getTrends', internals.recipe.getRecipes);
   router.get('/recipe/get/:id', internals.recipe.getRecipe);
   router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.create);
   router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipe.addComment);

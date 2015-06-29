@@ -27,11 +27,11 @@ function getFromUsername (username,callback){
 function login (query,password,callback){
   User.findOne(query,function(err,user){
     if(err) return callback(err);
-    if(!user) return callback(null,{userId: "User not found"});
+    if(!user) return callback(null,{message: "User not found"});
 
     user.comparePassword(password, function(err, isValid){
       if(err) return callback(err);
-      if(!isValid) return callback(null,{password: "Wrong password"});
+      if(!isValid) return callback(null,{message: "Incorrect password"});
 
       callback(null,null,user);
     });
