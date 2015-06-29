@@ -53,7 +53,7 @@ function getRecipe(id,callback){
     if(err) return callback(err);
     if(!recipe) return callback(null,{recipe: "Recipe does not exist"});
 
-    callback(null,null,{recipe: recipe});
+    callback(null,null,recipe);
   });
 }
 
