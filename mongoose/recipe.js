@@ -28,9 +28,11 @@ var PictureSchema = new Schema({
 var StepSchema = new Schema({
   number: {type: Number, min: 1, required: true},
   action: {type: String, minlength: 10, required: true},
-  picture: PictureSchema,
+  picture: {type: Schema.ObjectId, ref: 'PictureSchema'},
   time: {type: Number, min: 0}
 });
+
+var Picture = Mongoose.model('Picture',PictureSchema);
 
 var RecipeSchema = new Schema({
   name: {type: String,required: true, trim: true},
