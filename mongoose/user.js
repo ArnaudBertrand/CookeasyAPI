@@ -35,7 +35,7 @@ UserSchema.pre('save', function(next) {
 });
 
 /** Statics **/
-UserSchema.methods = {
+UserSchema.statics = {
   login: login,
   exists: exists
 };

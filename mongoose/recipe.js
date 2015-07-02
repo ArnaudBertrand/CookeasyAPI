@@ -99,6 +99,15 @@ function addUsersPicture(){
   //TODO
 }
 
+/** Statics functions **/
+function get(id,callback){
+  this.findOne({_id: id},function(err, recipe){
+    if(err) return callback(err);
+    if(!recipe) return callback(null,{recipe: "Recipe does not exist"});
+
+    callback(null,null,recipe);
+  });
+}
 
 function list(nb,filter,callback){
   var selector = {};
@@ -117,17 +126,7 @@ function list(nb,filter,callback){
     if(err) return callback(err);
 
     callback(null,recipes);
-  }).limit(nb).populate('picture steps.picture');
-}
-
-/** Statics functions **/
-function get(id,callback){
-  this.findOne({_id: id},function(err, recipe){
-    if(err) return callback(err);
-    if(!recipe) return callback(null,{recipe: "Recipe does not exist"});
-
-    callback(null,null,recipe);
-  });
+  }).limit(nb).populate('picture');
 }
 
 Mongoose.model('Recipe', RecipeSchema);
