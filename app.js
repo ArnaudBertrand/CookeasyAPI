@@ -1,4 +1,5 @@
-var express = require('express'),
+var fs = require('fs'),
+    express = require('express'),
     Mongoose = require('mongoose'),
     config = {};
 
@@ -24,8 +25,6 @@ db.once('open', function callback() {
 });
 
 // Bootstrap models
-console.log('test');
-console.log(__dirname + '/mongoose');
 fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
   console.log(file);
   if (~file.indexOf('.js')) require(__dirname + '/mongoose/' + file);
@@ -33,7 +32,6 @@ fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
 
 config.express(app);
 
-var routes = require('./routes');
-routes(app);
+require('./routes')(app);
 
 app.listen(port);
