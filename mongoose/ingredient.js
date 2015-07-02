@@ -3,10 +3,11 @@ var Mongoose = require('mongoose'),
 
 var IngredientSchema = new Schema({
   name: { type: String, required: true, index: { unique: true } },
-  type: Number,
-  tip: String,
+  new: {type: Boolean, default: true},
   picture: String,
-  new: {type: Boolean, default: true}
+  recipes: [String],
+  type: Number,
+  tip: String
 });
 
 module.exports = Mongoose.model('Ingredient', IngredientSchema);
