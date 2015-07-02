@@ -3,7 +3,7 @@ var Mongoose = require('mongoose'),
     Ingredient = Mongoose.model('Ingredient');
 
 var CommentSchema = new Schema({
-  author: {type: String, required: true},
+  author: {type: Schema.ObjectId, ref: 'User', required: true},
   createdOn: {type: Number, default: Date.now()},
   mark: {type: Number, min: 1, max: 5},
   message: {type: String, required: true},
@@ -102,8 +102,8 @@ function addUsersPicture(){
 /** Statics functions **/
 function get(id,callback){
   this.findOne({_id: id})
-      .populate('picture, public_id')
-      .populate('author, username')
+      .populate('picture')
+      .populate('author')
       .exec(cb);
 
   function cb(err, recipe){
