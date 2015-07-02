@@ -40,7 +40,7 @@ function create(recipe,callback){
   recipe.save(function(err){
     if(err) return callback(err);
 
-    callback(null,{id: recipe._id});
+    callback(null,recipe._id);
   });
 }
 
