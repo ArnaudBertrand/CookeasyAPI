@@ -1,6 +1,5 @@
 var express = require('express'),
     Mongoose = require('mongoose'),
-    routes = require('./routes'),
     config = {};
 
 config.express = require('./config/express.js');
@@ -20,6 +19,11 @@ var db = Mongoose.connection;
 db.on('error', console.log);
 db.on('disconnected', connect);
 
+db.once('open', function callback() {
+  console.log("Connection with database succeeded.");
+});
+
+// Bootstrap models
 console.log('test');
 console.log(__dirname + '/mongoose');
 fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
@@ -29,11 +33,7 @@ fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
 
 config.express(app);
 
-db.once('open', function callback() {
-// Bootstrap models
-  routes(app);
-  console.log("Connection with database succeeded.");
-});
-
+var routes = require('./routes');
+routes(app);
 
 app.listen(port);
