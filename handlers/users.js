@@ -40,7 +40,7 @@ function getFromUsername (req,res){
     return res.send({error: 'No username'},400);
   }
 
-  UserDao.getFromUsername(username,function(err,fail,user){
+  User.get(username,function(err,fail,user){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
     res.send(user);

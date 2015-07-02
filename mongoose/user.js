@@ -34,13 +34,45 @@ UserSchema.pre('save', function(next) {
   });
 });
 
+/** Methods **/
+UserSchema.methods = {
+  comparePassword: comparePassword
+};
+
 /** Statics **/
 UserSchema.statics = {
   login: login,
-  exists: exists
+  exists: exists,
+  getFromUsername: getFromUsername
 };
 
+/** Methods functions **/
+function comparePassword(password, callback){
+  bcrypt.compare(password, this.password, function(err, isMatch) {
+    if(err) return callback(err);
+    callback(null, isMatch);
+  });
+}
+
 /** Statics functions **/
+function getFromUsername (username,callback){
+  var projection = {
+    activities: 1,
+    description: 1,
+    dob: 1,
+    level: 1,
+    location: 1,
+    picture: 1,
+    username: 1
+  };
+
+  this.findOne({username: username},projection,function(err,user){
+    if(err) return callback(err);
+    if(!user) return callback(null,{user: 'User not found'});
+    callback(null,null,user);
+  });
+}
+
 function login(selector, password, cb) {
   this.findOne(selector,function(err,user){
     if(err) return callback(err);
