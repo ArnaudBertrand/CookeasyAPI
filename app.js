@@ -20,11 +20,6 @@ var db = Mongoose.connection;
 db.on('error', console.log);
 db.on('disconnected', connect);
 
-db.once('open', function callback() {
-  console.log("Connection with database succeeded.");
-});
-
-// Bootstrap models
 console.log('test');
 console.log(__dirname + '/mongoose');
 fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
@@ -34,6 +29,11 @@ fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
 
 config.express(app);
 
-routes(app);
+db.once('open', function callback() {
+// Bootstrap models
+  routes(app);
+  console.log("Connection with database succeeded.");
+});
+
 
 app.listen(port);
