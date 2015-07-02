@@ -1,4 +1,5 @@
-var User = require('./../mongoose/user.js');
+var Mongoose = require('mongoose'),
+    User = Mongoose.model('User');
 
 var UserDao = {
   getFromUsername: getFromUsername,

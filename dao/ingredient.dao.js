@@ -1,4 +1,5 @@
-var Ingredient = require('./../mongoose/ingredient.js');
+var Mongoose = require('mongoose'),
+    Ingredient = Mongoose.model('Ingredient');
 
 var RecipeDao = {
   addToRecipe: addToRecipe

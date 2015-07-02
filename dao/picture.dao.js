@@ -1,4 +1,5 @@
-var Picture = require('./../mongoose/picture.js');
+var Mongoose = require('mongoose'),
+    Picture = Mongoose.model('Picture');
 
 var PictureDao = {
   add: add

@@ -10,4 +10,4 @@ var IngredientSchema = new Schema({
   tip: String
 });
 
-module.exports = Mongoose.model('Ingredient', IngredientSchema);
+Mongoose.model('Ingredient', IngredientSchema);

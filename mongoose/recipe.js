@@ -56,4 +56,4 @@ RecipeSchema.post('save', function(doc){
 });
 
 
-module.exports = Mongoose.model('Recipe', RecipeSchema);
+Mongoose.model('Recipe', RecipeSchema);

@@ -11,4 +11,4 @@ var PictureSchema = new Schema({
   width: {type: Number, required: true}
 });
 
-module.exports = Mongoose.model('Picture',PictureSchema);
+Mongoose.model('Picture',PictureSchema);
