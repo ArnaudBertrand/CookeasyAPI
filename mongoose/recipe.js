@@ -66,13 +66,13 @@ RecipeSchema.post('save', function(doc){
 /** Methods **/
 RecipeSchema.methods = {
   addComment: addComment,
-  addUsersPicture: addUsersPicture,
-  list: list
+  addUsersPicture: addUsersPicture
 };
 
 /** Statics **/
 RecipeSchema.statics = {
-  get: get
+  get: get,
+  list: list
 };
 
 /** Methods functions **/

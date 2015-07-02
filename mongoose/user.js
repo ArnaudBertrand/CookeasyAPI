@@ -34,13 +34,13 @@ UserSchema.pre('save', function(next) {
   });
 });
 
-/** Methods **/
+/** Statics **/
 UserSchema.methods = {
   login: login,
   exists: exists
 };
 
-/** Methods functions **/
+/** Statics functions **/
 function login(selector, password, cb) {
   this.findOne(selector,function(err,user){
     if(err) return callback(err);
