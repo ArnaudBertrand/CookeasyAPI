@@ -49,16 +49,6 @@ module.exports = exports = function(app) {
   /** LOGIN **/
   router.post('/login',internals.users.login);
 
-  /** ROUTES TO CHANGE **/
-  router.post('/user/login', internals.users.login); // change to Get with parameters
-  /** ROUTES TO DELETE **/
-  router.post('/recipe/search', internals.recipes.search); // change to Get with parameters
-  router.get('/recipe/get/:id', internals.recipes.getRecipe);
-  router.post('/recipe/create', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.create);
-  router.post('/recipe/comment/add/:id', jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.addComment);
-  router.post('/user/signup', internals.users.signup);
-
-
   app.use('/',router);
 
   // Error handling middleware
