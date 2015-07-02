@@ -72,12 +72,12 @@ function getRecipes(nb,filter,callback){
     selector.name = {$regex: regex, $options: "i"};
   }
 
-  Recipe.find(selector,function(err, recipes){
-    if(err) return callback(err);
-
-    callback(null,recipes);
-  }).limit(nb);
 }
+Recipe.find(selector,function(err, recipes){
+  if(err) return callback(err);
+
+  callback(null,recipes);
+}).limit(nb).populate('picture steps.picture');
 
 function search(){
 
