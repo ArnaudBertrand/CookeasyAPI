@@ -11,7 +11,6 @@ var RecipeHandler = {
   getRecipe: getRecipe,
   getRecipes: getRecipes,
   remove: remove,
-  search: search,
   uploadPictures: uploadPictures
 };
 
