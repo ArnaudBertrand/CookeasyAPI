@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken'),
     secret = require('./../config/secret.js'),
-    UserDao = require('./../dao/user.dao.js');
+    User = require('mongoose').model('User');
 
 var UserHandler = {
   login: login,
@@ -25,7 +25,7 @@ function login (req, res, next){
   // Find user
   var query = isEmail ? {email: id} : {username: id};
 
-  UserDao.login(query,password,function(err,fail,user){
+  User.login(query,password,function(err,fail,user){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
     // Create and send token
@@ -65,12 +65,19 @@ function signup (req, res){
     return res.send({error: 'Username too short'},400);
   }
 
-  UserDao.signup(user,function(err,fail){
+  User.exists(user,function(err,fail){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
-    // Create and send token
-    var token = jwt.sign(user, secret.secretToken, { expiresInMinutes: 60 });
-    res.send({success: true, token: token});
+
+    var userToSave = new User(user);
+    userToSave.save(function(err, userSaved){
+      if(err) return callback(err);
+
+      // Create and send token
+      var token = jwt.sign(userSaved, secret.secretToken, { expiresInMinutes: 60 });
+      res.send({success: true, token: token});
+    });
+
   });
 }
 

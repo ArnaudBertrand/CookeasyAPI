@@ -30,7 +30,7 @@ function login (query,password,callback){
     if(err) return callback(err);
     if(!user) return callback(null,{message: "User not found"});
 
-    user.comparePassword(password, function(err, isValid){
+    user.comparePassword(selector,password, function(err, isValid){
       if(err) return callback(err);
       if(!isValid) return callback(null,{message: "Incorrect password"});
 

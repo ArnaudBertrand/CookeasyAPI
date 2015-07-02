@@ -2,13 +2,21 @@ var Mongoose = require('mongoose'),
     Schema = Mongoose.Schema;
 
 var PictureSchema = new Schema({
-  author: {type: String, required: true},
-  createdOn: {type: Number, required: true},
-  format: {type: String, required: true},
-  height: {type: Number, required: true},
-  public_id: {type: String, required: true},
+  author: {type: Schema.ObjectId, ref: 'User'},
+  createdOn: {type: Number},
+  format: {type: String},
+  height: {type: Number},
+  public_id: {type: String},
   tags: [String],
-  width: {type: Number, required: true}
+  width: {type: Number}
 });
+
+/** Validation **/
+PictureSchema.path('author').required(true, 'Picture need an author');
+PictureSchema.path('createdOn').required(true, 'Picture need a creation date');
+PictureSchema.path('format').required(true, 'Picture need a format');
+PictureSchema.path('height').required(true, 'Picture needs a height');
+PictureSchema.path('public_id').required(true, 'Picture needs a public_id');
+PictureSchema.path('width').required(true, 'Picture needs a width');
 
 Mongoose.model('Picture',PictureSchema);

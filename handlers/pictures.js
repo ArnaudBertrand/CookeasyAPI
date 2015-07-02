@@ -1,5 +1,5 @@
 var cloudinary = require('cloudinary'),
-    PictureDao = require('./../dao/picture.dao.js');
+    Picture = require('mongoose').model('Picture');
 
 var PicturesHandler = {
   upload: upload
@@ -17,9 +17,10 @@ function upload (req,res,next){
         picture.author = author;
         picture.createdOn =  Date.now();
 
-        PictureDao.add(picture,function(err,picture){
+        var imgToSave = new Picture(picture);
+        imgToSave.save(function(err,imgSaved){
           if(err) return next(err);
-          res.send(picture);
+          res.send(imgSaved);
         });
       },
       {

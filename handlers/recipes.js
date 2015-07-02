@@ -1,8 +1,6 @@
 var cloudinary = require('cloudinary'),
     validate = require('jsonschema').validate,
-    Recipe = require('./../mongoose/recipe.js'),
-    Ingredient = require('./../mongoose/ingredient.js'),
-    RecipeDao = require('./../dao/recipe.dao.js');
+    Recipe = require('mongoose').model('Recipe');
 
 // Cloudinary config - Image storing
 cloudinary.config({ cloud_name: 'hqk7wz0oa', api_key: '418195327363955', api_secret: 'flVv33bol_ReuTE38nRZ5_zOAy0' });
@@ -23,7 +21,7 @@ function addComment (req, res, next){
   // Set user
   comment.author = req.user.username;
 
-  RecipeDao.addComment(req.params.id,comment,function(err,fail,comment){
+  Recipe.addComment(req.params.id,comment,function(err,fail,comment){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
     res.send(comment);
@@ -49,17 +47,17 @@ function create(req, res, next){
   recipe.author = req.user.username;
 
   // Create the recipe
-  RecipeDao.create(recipe,function(err,rcpId){
+  var recipeToSave = new Recipe(recipe);
+  recipeToSave.save(function(err,recipeSaved){
     if(err) return next(err);
-    res.send(rcpId);
+    res.send(recipeSaved._id);
   });
 }
 
 function getRecipe(req,res,next){
-  console.log('handler single');
   var id =  req.params.id || '';
 
-  RecipeDao.getRecipe(id,function(err,fail,recipe){
+  Recipe.get(id,function(err,fail,recipe){
     if(err) return next(err);
     if(fail) return res.send(fail,400);
     res.send(recipe);
@@ -79,14 +77,20 @@ function getRecipes(req,res,next){
 
   if(Object.keys(errors).length > 0) return res.send(errors,400);
 
-  RecipeDao.getRecipes(nb,filter,function(err,recipes){
+  Recipe.list(nb,filter,function(err,recipes){
     if(err) return next(err);
     res.send(recipes);
   });
 }
 
 function remove(req,res,next){
-  next({error: 'Not implemented'});
+  var id =  req.params.id || '';
+
+  Recipe.remove({id: id},function(err,rmv){
+    if(err) return next(err);
+    if(!rmv) return res.status(404).send('Recipe not found');
+    res.send(recipes);
+  });
 }
 
 function uploadPictures(req,res){
@@ -103,21 +107,12 @@ function uploadPictures(req,res){
         var picture = {};
         picture.url = result.url;
         // Mini
-        picture.miniThumbUrlLarge = cloudinary.url(result.public_id, { width: 180, height: 120, crop: "fill" });
-        picture.miniThumbUrlSquare = cloudinary.url(result.public_id, { width: 100, height: 100, crop: "fill" });
-        picture.miniThumbUrlLong = cloudinary.url(result.public_id, { width: 120, height: 180, crop: "fill" });
-        // Thumb
-        picture.thumbUrlLarge = cloudinary.url(result.public_id, { width: 300, height: 200, crop: "fill" });
-        picture.thumbUrlSquare = cloudinary.url(result.public_id, { width: 300, height: 300, crop: "fill" });
-        picture.thumbUrlLong = cloudinary.url(result.public_id, { width: 200, height: 300, crop: "fill" });
         picture.author = author;
         picture.createdOn =  Date.now();
 
 
-        Recipe.findByIdAndUpdate(id,{$push: {"pictures": picture}}, {safe: true, upsert: true},function(err, model){
-          if(err){
-            return res.send({error: err});
-          }
+        Recipe.update(id,{$push: {"pictures": picture}}, {safe: true, upsert: true},function(err){
+          if(err) return res.send({error: err});
           res.send({picture: picture});
         });
       },
@@ -128,13 +123,6 @@ function uploadPictures(req,res){
         tags: tags
       }
   );
-}
-
-/******* TO REMOVE *********/
-function search(req,res,next){
-  var search = req.body.search || '';
-  req.body.filter = {match: search};
-  getRecipes(req,res,next);
 }
 
 module.exports = RecipeHandler;
