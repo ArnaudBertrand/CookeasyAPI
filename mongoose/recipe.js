@@ -102,9 +102,9 @@ function addUsersPicture(){
 /** Statics functions **/
 function get(id,callback){
   this.findOne({_id: id})
-      .populate('picture','public')
+      .populate('picture','public_id')
       .populate('author','username')
-      .populate({path: 'comments.author', select: 'username picture'})
+      .populate('comments.author','username picture')
       .exec(cb);
 
   function cb(err, recipe){
