@@ -45,7 +45,7 @@ RecipeSchema.path('nbPerson').required(true, 'Recipe needs number of person');
 RecipeSchema.path('picture').required(true, 'Recipe needs a main picture');
 RecipeSchema.path('steps').required(true, 'Recipe needs some steps');
 RecipeSchema.path('time').required(true, 'Recipe needs a duration');
-RecipeSchema.path('updateOn').required(true, 'Recipe needs an update date');
+RecipeSchema.path('updatedOn').required(true, 'Recipe needs an update date');
 
 /** Post hooks **/
 RecipeSchema.post('save', function(doc){
