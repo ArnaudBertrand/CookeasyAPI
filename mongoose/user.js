@@ -42,7 +42,7 @@ UserSchema.methods = {
 /** Statics **/
 UserSchema.statics = {
   exists: exists,
-  getFromUsername: getFromUsername
+  getFromUsername: getFromUsername,
   login: login
 };
 
