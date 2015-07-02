@@ -41,9 +41,9 @@ UserSchema.methods = {
 
 /** Statics **/
 UserSchema.statics = {
-  login: login,
   exists: exists,
   getFromUsername: getFromUsername
+  login: login
 };
 
 /** Methods functions **/
@@ -55,6 +55,21 @@ function comparePassword(password, callback){
 }
 
 /** Statics functions **/
+function exists(user,callback){
+  var users = this;
+  users.where({username: user.username}).count(function(err, count){
+    if(err) return callback(err);
+    if(count) return callback(null,{username: "Username already in use"});
+
+    users.where({email: user.email}).count(function(err, count){
+      if(err) return callback(err);
+      if(count) return callback(null,{email: "E-mail already in use"});
+
+      callback(null,null);
+    });
+  });
+}
+
 function getFromUsername (username,callback){
   var projection = {
     activities: 1,
@@ -82,21 +97,6 @@ function login(selector, password, cb) {
       if(err) return cb(err);
       if(!isMatch) return callback(null,{message: "Wrong password"});
       cb(null, null, user);
-    });
-  });
-}
-
-function exists(user,callback){
-  var users = this;
-  users.where({username: user.username}).count(function(err, count){
-    if(err) return callback(err);
-    if(count) return callback(null,{username: "Username already in use"});
-
-    users.where({email: user.email}).count(function(err, count){
-      if(err) return callback(err);
-      if(count) return callback(null,{email: "E-mail already in use"});
-
-      callback(null,null);
     });
   });
 }
