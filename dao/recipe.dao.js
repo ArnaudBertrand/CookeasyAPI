@@ -39,7 +39,7 @@ function create(recipe,callback){
   var recipe = new Recipe(recipe);
   recipe.save(function(err){
     if(err) return callback(err);
-
+    console.log(recipe);
     callback(null,recipe._id);
   });
 }
