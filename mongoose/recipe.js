@@ -101,12 +101,17 @@ function addUsersPicture(){
 
 /** Statics functions **/
 function get(id,callback){
-  this.findOne({_id: id},function(err, recipe){
+  this.findOne({_id: id})
+      .populate('picture, public_id')
+      .populate('author, username')
+      .exec(cb);
+
+  function cb(err, recipe){
     if(err) return callback(err);
     if(!recipe) return callback(null,{recipe: "Recipe does not exist"});
 
     callback(null,null,recipe);
-  });
+  }
 }
 
 function list(nb,filter,callback){
