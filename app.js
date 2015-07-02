@@ -25,6 +25,8 @@ db.once('open', function callback() {
 });
 
 // Bootstrap models
+console.log('test');
+console.log(__dirname + '/mongoose');
 fs.readdirSync(__dirname + '/mongoose').forEach(function (file) {
   console.log(file);
   if (~file.indexOf('.js')) require(__dirname + '/mongoose/' + file);
