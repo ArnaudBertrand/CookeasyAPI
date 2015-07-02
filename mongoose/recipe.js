@@ -66,7 +66,8 @@ RecipeSchema.post('save', function(doc){
 /** Methods **/
 RecipeSchema.methods = {
   addComment: addComment,
-  addUsersPicture: addUsersPicture
+  addUsersPicture: addUsersPicture,
+  checkStepOrder: checkStepOrder
 };
 
 /** Statics **/
@@ -97,6 +98,16 @@ function addComment(id,comment,callback){
 
 function addUsersPicture(){
   //TODO
+}
+
+function checkStepOrder(){
+  for(var stepCount = 1; stepCount <= this.steps.length; stepCount++){
+    var step = this.steps[stepCount];
+    if(step.number !== stepCount){
+      return false;
+    }
+  }
+  return true;
 }
 
 /** Statics functions **/

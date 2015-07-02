@@ -21,10 +21,10 @@ module.exports = exports = function(app) {
 
   /** RECIPE **/
   router.route('/recipes')
-      .get(internals.recipes.getRecipes)
+      .get(internals.recipes.list)
       .post(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.create);
   router.route('/recipes/:id')
-      .get(internals.recipes.getRecipe)
+      .get(internals.recipes.get)
       .delete(jwt({secret: secret.secretToken}), tokenManager.verifyToken, internals.recipes.remove);
 
   /** RECIPE -- comments **/
