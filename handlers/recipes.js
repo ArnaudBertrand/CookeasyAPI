@@ -14,16 +14,17 @@ var RecipeHandler = {
   uploadPictures: uploadPictures
 };
 
-function addComment (req, res, next){
+function addComment(req, res, next){
   var comment = req.body;
+  var recipeId = req.params.id;
 
   // Set user
   comment.author = req.user;
 
-  Recipe.addComment(req.params.id,comment,function(err,fail,comment){
+  Recipe.addComment(recipeId, comment, function(err,fail,comment){
     if(err) return next(err);
     if(fail) return res.status(404).send(fail);
-    res.send(comment);
+    res.status(201).send(comment);
   });
 }
 
@@ -39,7 +40,7 @@ function create(req, res, next){
   // Create the recipe
   recipe.save(function(err,recipeSaved){
     if(err) return next(err);
-    res.send(recipeSaved._id);
+    res.status(201).send(recipeSaved._id);
   });
 }
 
@@ -63,6 +64,7 @@ function list(req,res,next){
   // Filters validator
   var filter = {};
   if(req.query.match) filter.match = req.query.match;
+  if(!validate(filter.match,{type: "String"})) errors.match = 'Match filter incorrect';
 
   if(Object.keys(errors).length > 0) return res.send(errors,400);
 
